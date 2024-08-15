@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 
 import { getAllUserMembershipRecords } from "@/app/(general)/lib/data";
 import { useSession } from "@/app/(general)/lib/sessioncontext";
+import Dialog from "../dialog/dialog";
 
 /**
  * ## Sidebar
@@ -61,7 +62,18 @@ export default function Sidebar() {
                                 <Link className={`navlink-sidebar ${pathname.startsWith("/posts/") || pathname === "/posts" ? "after-active" : null}`} href={"/posts"} aria-label="Posts"><HomeIcon className="w-5 h-5" /><span className={`flex`}>Posts</span></Link>
                                 <Link className={`navlink-sidebar ${pathname.startsWith("/c/") || pathname === "/c" ? "after-active" : null}`} href={"/c"} aria-label="Community"><ViewColumnsIcon className="w-5 h-5" /><span className={`flex`}>Community</span></Link>
                                 <Link className={`navlink-sidebar ${pathname.startsWith("/search/") || pathname === "/search" ? "after-active" : null}`} href={"/search"} aria-label="Search"><MagnifyingGlassIcon className="w-5 h-5" /><span className={`flex`}>Search</span></Link>                
-                                <Link className={`navlink-sidebar ${pathname.startsWith("/create/") || pathname === "/create" ? "after-active" : null}`} href={"/create"} aria-label="Create"><PlusIcon className="w-5 h-5" /><span className={`flex`}>Create</span></Link>
+                                {/*<Link className={`navlink-sidebar ${pathname.startsWith("/create/") || pathname === "/create" ? "after-active" : null}`} href={"/create"} aria-label="Create"><PlusIcon className="w-5 h-5" /><span className={`flex`}>Create</span></Link>*/}
+                                <Dialog>
+                                    <Dialog.Trigger><button className={`navlink-sidebar ${pathname.startsWith("/create/") || pathname === "/create" ? "after-active" : null}`} aria-label="Create"><PlusIcon className="w-5 h-5" />Create</button></Dialog.Trigger>
+                                    <Dialog.Content>
+                                        <Dialog.Title className="mb-4">What do you want to create?</Dialog.Title>
+                                        <Dialog.ButtonContainer>
+                                            <Link className="navlink-full" href={"/create/post"}>Post</Link>
+                                            <Link className="navlink-full" href={"/create/community"}>Community</Link>
+                                            <Dialog.CloseButton><button className="navlink">Cancel</button></Dialog.CloseButton>
+                                        </Dialog.ButtonContainer>
+                                    </Dialog.Content>
+                                </Dialog>
                             </div>
 
                             { user ? 
