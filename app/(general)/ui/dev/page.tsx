@@ -192,7 +192,7 @@ export default function DeveloperPage() {
                             className?: string;
                         </div>
 
-                        <h2 className="header-5 w-full mb-4">Example: User Menu</h2>
+                        {/*<h2 className="header-5 w-full mb-4">Example: User Menu</h2>
                         <Menu>
                             <Menu.Trigger><button className="navlink">Click Me</button></Menu.Trigger>
                             <Menu.Content>
@@ -209,17 +209,19 @@ export default function DeveloperPage() {
                                     </div>
                                 </MenuCustom>                                
                             </Menu.Content>
-                        </Menu>
+                        </Menu>*/}
 
                         <h2 className="header-5 w-full mb-4 mt-4">Example: Post Menu</h2>
                         <Menu>
                             <Menu.Trigger><button className="navlink !px-2"><EllipsisVerticalIcon className="w-5 h-5" /></button></Menu.Trigger>
-                            <MenuLink text={"User"} icon={<img src={"/images/favicon/favicon.svg"} alt={""}></img>} link={`/user`}></MenuLink>
-                            <MenuLink text={"General"} icon={<img src={"/images/favicon/favicon.svg"} alt={""}></img>} link={`/c`}></MenuLink>
-                            <hr className='mt-1 !mb-1'/>
-                            <MenuShare icon={<ShareIcon />} text={"Share"} title={"Share the Command UI Page!"} url={"/dev"} />
-                            {/* @ts-ignore */}
-                            <MenuButton icon={<ArchiveBoxXMarkIcon />} text={"Delete"} destructive={true} />                                 
+                            <Menu.Content>
+                                <MenuLink text={"User"} icon={<img src={"/images/favicon/favicon.svg"} alt={""}></img>} link={`/user`}></MenuLink>
+                                <MenuLink text={"General"} icon={<img src={"/images/favicon/favicon.svg"} alt={""}></img>} link={`/c`}></MenuLink>
+                                <hr className='mt-1 !mb-1'/>
+                                <MenuShare icon={<ShareIcon />} text={"Share"} title={"Share the Command UI Page!"} url={"/dev"} />
+                                {/* @ts-ignore */}
+                                <MenuButton icon={<ArchiveBoxXMarkIcon />} text={"Delete"} destructive={true} />                                
+                            </Menu.Content>
                         </Menu>  
                         <div className="mb-40" />
 
