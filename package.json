@@ -35,7 +35,7 @@
     "dotenv-cli": "^7.4.1",
     "framer-motion": "^11.1.7",
     "lucia": "^3.2.0",
-    "next": "^14.2.4",
+    "next": "^14.2.7",
     "next-dev-https": "^0.13.3",
     "nextjs-toploader": "^1.6.12",
     "open-graph-scraper": "^6.6.2",
