@@ -1,13 +1,11 @@
 "use client";
 
-import { ArchiveBoxXMarkIcon, ArrowRightEndOnRectangleIcon, BookmarkIcon, ChevronUpIcon, Cog6ToothIcon, EllipsisVerticalIcon, MegaphoneIcon, ShareIcon } from "@heroicons/react/16/solid";
-import Link from "next/link";
+import { ArchiveBoxXMarkIcon, ChevronUpIcon, EllipsisVerticalIcon, ShareIcon } from "@heroicons/react/16/solid";
 
 import Dialog from "../components/dialog/dialog";
 import LargeDropdown from "../components/large_dropdown";
-import Menu, { MenuButton, MenuCustom, MenuLink, MenuShare, MenuUser } from "../components/menu/menu";
+import Menu, { MenuButton, MenuLink, MenuShare } from "../components/menu/menu";
 import Alert, { AlertSubtitle, AlertTitle } from "../components/new_alert";
-import LogoutButton from "../components/signoutButton";
 
 export default function DeveloperPage() {
 
@@ -311,6 +309,13 @@ export default function DeveloperPage() {
                         <h2 className="header-5 w-full mb-4">Card Post (TBD)</h2>
                     </LargeDropdown>                    
                 </div>
+
+                <h1 className="header">Heading 1</h1>
+                <h1 className="header-2">Heading 2</h1>
+                <h1 className="header-3">Heading 3</h1>
+                <h1 className="header-4">Heading 4</h1>
+                <h1 className="header-5">Heading 5</h1>
+                <h1 className="header-6">Heading 6</h1>
 
                 <h2 className="header-5 mt-4 w-full">Debug</h2> 
 
