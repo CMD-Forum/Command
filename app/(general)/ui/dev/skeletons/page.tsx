@@ -52,6 +52,7 @@ export default async function SkeletonPage() {
                                 title={post.title} 
                                 // @ts-ignore
                                 author={post.author} 
+                                // @ts-ignore
                                 community={post.community} 
                                 createdAt={post.createdAt} 
                                 updatedAt={post.updatedAt}
@@ -75,6 +76,7 @@ export default async function SkeletonPage() {
                                 id={post.id}
                                 title={post.title}
                                 author={post.author}
+                                // @ts-ignore
                                 community={post.community}
                                 createdAt={post.createdAt}
                                 updatedAt={post.updatedAt}

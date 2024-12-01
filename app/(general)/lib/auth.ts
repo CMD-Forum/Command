@@ -26,6 +26,7 @@ export const lucia = new Lucia(adapter, {
 			image: attributes.image,
 			role: attributes.role,
 			githubId: attributes.github_id,
+			public: attributes.public,
 		};
 	},
 	getSessionAttributes: (attributes) => {
@@ -81,6 +82,7 @@ interface DatabaseUserAttributes {
 	image: string;
 	role: "ADMIN" | "MODERATOR" | "USER" | "NULL" | "DEFAULT"
 	github_id: number;
+	public: boolean;
 }
 
 /**

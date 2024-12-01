@@ -8,7 +8,10 @@ const nextConfig = {
     pageExtensions: ['js', 'jsx', 'ts', 'tsx'],
     output: "standalone",
     experimental: {
-        serverComponentsExternalPackages: ["@node-rs/argon2"]
+        serverComponentsExternalPackages: ["@node-rs/argon2"],
+        serverActions: {
+            allowedOrigins: ['localhost:3000', 'http://localhost:3000']
+        }
     },
 }
 

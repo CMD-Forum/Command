@@ -25,7 +25,9 @@ export default async function HomePage() {
                       <AlertSubtitle>This is a development version of Command - some things may not work as expected or may be unfinished.</AlertSubtitle>
                   </Alert>
               </div>
-              <PostList />  
+              <div className='px-6 lg:px-0'>
+                <PostList />   
+              </div>
             </div>
         </div>
     </main>

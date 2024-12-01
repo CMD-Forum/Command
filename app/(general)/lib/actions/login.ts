@@ -8,7 +8,7 @@ import { userAgent } from "next/server";
 
 import { lucia } from "../auth";
 import { prisma } from "../db";
-import { logError, logMessage } from "../utils";
+import { logError } from "../utils";
 
 export async function login(state: any, formData: FormData) {
 
@@ -19,7 +19,6 @@ export async function login(state: any, formData: FormData) {
 
     const userAgentStructure = {headers: headersList}
     const agent = userAgent(userAgentStructure)
-    logMessage("User Logged In: " + agent);
 
     if (formData === undefined) {
         return { error: "Sorry, the form failed to submit." }

@@ -1,11 +1,37 @@
+import { verifyRequestOrigin } from "lucia";
 import { NextResponse } from "next/server";
 
+import { lucia } from "../../lib/auth";
 import getOGS from "../../lib/ogs";
-import { logError } from "../../lib/utils";
+import { logError, logWarning } from "../../lib/utils";
 
 export async function POST( req: Request ) {
 
     try {
+
+        // Handily taken from Lucia Docs (bottom of https://lucia-auth.com/guides/validate-session-cookies/nextjs-app)
+        const originHeader = req.headers.get("Origin");
+        // NOTE: You may need to use `X-Forwarded-Host` instead
+        const hostHeader = req.headers.get("Host");
+        if (!originHeader || !hostHeader || !verifyRequestOrigin(originHeader, [hostHeader])) {
+            const authorizationHeader = req.headers.get("Authorization");
+            const sessionId = lucia.readBearerToken(authorizationHeader ?? "");
+    
+            if ( ! sessionId) {
+                return new NextResponse(null, {
+                    status: 401
+                });
+            }   
+            
+            const { user } = await lucia.validateSession(sessionId);
+    
+            if ( ! user?.id ) {
+                return new NextResponse(null, {
+                    status: 401
+                });
+            }
+        }
+
         const body = await req.json();
         let { url } = body;
         if ( ! url ) {
@@ -23,8 +49,8 @@ export async function POST( req: Request ) {
         
     } catch (error) {
         // @ts-ignore
-        logError("OGS Request Failed: " + error.result.error + " @ " + error.result.requestUrl);
+        logWarning("OGS Request Failed: " + error.result.error + " at " + error.result.requestUrl);
         // @ts-ignore
-        return NextResponse.json({ message: "OGS Request Failed: " + error.result.error + " @ " + error.result.requestUrl }, { status: 500 })
+        return NextResponse.json({ message: "OGS Request Failed: " + error.result.error + " at " + error.result.requestUrl }, { status: 500 })
     }
 }

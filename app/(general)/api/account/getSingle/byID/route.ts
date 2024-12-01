@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 
 import { prisma } from '@/app/(general)/lib/db';
+import { logError } from '@/app/(general)/lib/utils';
 
 export async function POST(req: Request) {
     try {
@@ -10,7 +11,7 @@ export async function POST(req: Request) {
         }
 
         const body = await req.json();
-        const { userId } = body;
+        const { userID } = body;
 
         /*if ( userId !== String ) {
             return NextResponse.json({ message: "UserID must be a string."})
@@ -18,7 +19,7 @@ export async function POST(req: Request) {
 
         const UserDetails = await prisma.user.findUnique({
             where: {
-                id: userId,
+                id: userID,
             },
             omit: {
                 password_hash: true,
@@ -27,13 +28,13 @@ export async function POST(req: Request) {
         });
 
         if ( UserDetails ) {
-            return NextResponse.json({ UserDetails }, { status: 201 });
+            return NextResponse.json(UserDetails, { status: 201 });
         } else if ( ! UserDetails ) {
             return NextResponse.json({ message: "User was not found." }, { status: 404 });
         }
 
     } catch(error) {
-        console.error(error);
+        logError(error);
         return NextResponse.json({ message: "Internal Server Error, check your formatting and that all required fields are present."}, { status: 500 });
     }
 }

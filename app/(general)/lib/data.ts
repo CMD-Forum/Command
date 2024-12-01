@@ -79,6 +79,37 @@ export async function getCommunityByDisplayName( display_name: string ) {
 
 }
 
+// getCommunitySidebarInfo
+
+export async function getCommunitySidebarInfo({ communityID }: { communityID: string }) {
+    try {
+        const dbCommunity = await prisma.community.findUnique({ 
+            where: { 
+              id: communityID
+            },
+            include: {
+              admins: {
+                select: {
+                  createdAt: true,
+                  updatedAt: true,
+                  user: {
+                    select: {
+                      username: true,
+                      description: true,
+                      image: true,
+                    },
+                  },
+                },
+              },
+            },
+        });
+        return dbCommunity
+    } catch (error) {
+        logError(error);
+        return null;
+    }
+}
+
 // getPost
 
 export async function getPost({ postID }: { postID: string }) {
@@ -144,6 +175,129 @@ export async function createPost( props: createPostProps ) {
     });
 
     return post;
+
+}
+
+// deletePostAsAuthor
+
+export async function deletePostAsAuthor({ postID, userID }: { postID: string, userID: string }) {
+    
+    const post = await prisma.post.findUnique({
+        where: {
+            id: postID,
+        },
+    });
+
+    if ( post && post?.authorId === userID ) {
+        try {
+
+            await prisma.upvotes.deleteMany({
+                where: {
+                    postID: postID,
+                },
+            });
+
+            await prisma.downvotes.deleteMany({
+                where: {
+                    postID: postID,
+                },
+            });
+
+            await prisma.comment.deleteMany({
+                where: {
+                    postId: postID,
+                },
+            });
+
+            const deletedPost = await prisma.post.delete({
+                where: {
+                    id: postID,
+                },
+            });
+
+            return { success: "Post successfully deleted.", data: deletedPost, status: 200 }
+        } catch ( error ) {
+            logError(error);
+            return { error: process.env.NODE_ENV === "development" ? `${error}` : "Something went wrong.", status: 500 };
+        }
+    } else if ( !post ) {
+        return { error: "Post doesn't exist.", status: 404 }
+    } else if ( post.authorId !== userID ) {
+        return { error: "You are not authorized to delete this post.", status: 403 }
+    }
+
+}
+
+// deletePostAsAdmin
+
+export async function deletePostAsAdmin({ postID, userID }: { postID: string, userID: string }) {
+    
+    const post = await prisma.post.findUnique({
+        where: {
+            id: postID,
+        },
+        include: {
+            community: {
+                include: {
+                    admins: {
+                        select: {
+                            userId: true,
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const authorized = post?.community.admins.some(admin => admin.userId === userID);
+
+    if ( post && authorized ) {
+        try {
+
+            await prisma.upvotes.deleteMany({
+                where: {
+                    postID: postID,
+                },
+            });
+
+            await prisma.downvotes.deleteMany({
+                where: {
+                    postID: postID,
+                },
+            });
+
+            await prisma.comment.deleteMany({
+                where: {
+                    postId: postID,
+                },
+            });
+
+            await prisma.moderationLog.create({
+                data: {
+                    adminId: userID,
+                    communityId: post.community.id,
+                    action: "DELETE_POST",
+                    subjectType: "POST",
+                    subjectId: post.id,
+                },
+            });
+
+            const deletedPost = await prisma.post.delete({
+                where: {
+                    id: postID,
+                },
+            });
+
+            return { success: "Post successfully deleted.", data: deletedPost, status: 200 }
+        } catch ( error ) {
+            logError(error);
+            return { error: process.env.NODE_ENV === "development" ? `${error}` : "Something went wrong.", status: 500 };
+        }
+    } else if ( !post ) {
+        return { error: "Post doesn't exist.", status: 404 }
+    } else if ( !authorized ) {
+        return { error: "You are not authorized to delete this post.", status: 403 }
+    }
 
 }
 
@@ -217,13 +371,14 @@ export async function getAllPostsFromCommunityID( id: string ) {
  * @returns {Community}
  */
 
-export async function createCommunity( { name, description, creatorUserID }: { name: string, description: string, creatorUserID: string } ) {
+export async function createCommunity( { name, description, sidebar_md, creatorUserID }: { name: string, description: string, sidebar_md: string, creatorUserID: string } ) {
 
     const community = await prisma.community.create({
         data: {
             name: name.toLowerCase(),
             display_name: name,
             description: description,
+            sidebar_md: sidebar_md,
         },
     });
 
@@ -264,6 +419,32 @@ export async function getCommunityAdminIDs( { communityId }: { communityId: stri
         logMessage("Community has no administrators.");
     }
 
+}
+
+// getCommunityAdmins
+
+export async function getCommunityAdmins({ communityID }: { communityID: string }) {
+    try {
+        const admins = await prisma.communityAdminship.findMany({ 
+            where: { 
+                communityId: communityID 
+            },
+            include: {
+                user: {
+                    select: {
+                        username: true,
+                        image: true,
+                        adminships: true,
+                    },
+                },
+            },
+        });
+
+        return admins
+    } catch (error) {
+        logError(error);
+        return null;
+    }
 }
 
 // getAllCommunitys
@@ -382,15 +563,15 @@ export async function checkIfVoted({ postID, userID }: { postID: string, userID:
     try {
         const upvote = await prisma.upvotes.findUnique({
             where: {
-                upvoteID: { userID, postID }
-            }
-        })
+                upvoteID: { userID, postID },
+            },
+        });
 
         const downvote = await prisma.downvotes.findUnique({
             where: {
-                downvoteID: { userID, postID }
-            }
-        })
+                downvoteID: { userID, postID },
+            },
+        });
         
         return { upvote: upvote ? true : false, downvote: downvote ? true : false }
     } catch ( error ) {
@@ -405,8 +586,8 @@ export async function upvote({ postID, userID }: { postID: string, userID: strin
             data: {
                 userID: userID,
                 postID: postID,
-            }
-        })
+            },
+        });
         
         return { upvote }
     } catch ( error ) {
@@ -420,9 +601,9 @@ export async function downvote({ postID, userID }: { postID: string, userID: str
         const downvote = await prisma.downvotes.create({
             data: {
                 userID: userID,
-                postID: postID
-            }
-        })
+                postID: postID,
+            },
+        });
         
         return { downvote }
     } catch ( error ) {
@@ -435,9 +616,9 @@ export async function removeUpvote({ postID, userID }: { postID: string, userID:
     try {
         await prisma.upvotes.delete({
             where: {
-                upvoteID: { userID, postID }
-            }
-        })
+                upvoteID: { userID, postID },
+            },
+        });
         
         return { message: "Removed Successfully" }
     } catch ( error ) {
@@ -450,9 +631,9 @@ export async function removeDownvote({ postID, userID }: { postID: string, userI
     try {
         await prisma.downvotes.delete({
             where: {
-                downvoteID: { userID, postID }
-            }
-        })
+                downvoteID: { userID, postID },
+            },
+        });
         
         return { message: "Removed Successfully" }
     } catch ( error ) {
@@ -465,9 +646,9 @@ export async function getTotalUpvotes({ postID }: { postID: string }) {
     try {
         const upvotes = await prisma.upvotes.count({
             where: {
-                postID: postID
-            }
-        })
+                postID: postID,
+            },
+        });
         
         return upvotes
     } catch ( error ) {
@@ -480,9 +661,9 @@ export async function getTotalDownvotes({ postID }: { postID: string }) {
     try {
         const downvotes = await prisma.downvotes.count({
             where: {
-                postID: postID
-            }
-        })
+                postID: postID,
+            },
+        });
         
         return downvotes
     } catch ( error ) {
@@ -491,17 +672,199 @@ export async function getTotalDownvotes({ postID }: { postID: string }) {
     }
 }
 
-// Testing Purposes
+// Comments
 
-export async function getJamsterJavaCommunityMemberOf() {
-    
-    const user = await prisma.user.findUnique({ where: { username: "JamsterJava" }, include: { memberships: true } })
+export async function createComment({ postID, userID, content, replyTo }: { postID: string, userID: string, content: string, replyTo?: string }) {
+    try {
+        const newComment = await prisma.comment.create({
+            data: {
+                userId: userID,
+                postId: postID,
+                content: content,
+                replyTo: replyTo || null,
+            },
+        });
 
-    if ( user ) {
-        console.log(user);
-        return user;
-    } else {
-        console.log("JamsterJava hasn't joined any communities.")
+        return newComment
+    } catch ( error ) {
+        logError(error);
+        return { error: error }
     }
+}
 
+export async function deleteComment({ commentID }: { commentID: string }) {
+    try {
+        const deletedComment = await prisma.comment.update({
+            where: {
+                id: commentID,
+            },
+            data: {
+                content: "[deleted]",
+            },
+        });
+
+        return deletedComment
+    } catch ( error ) {
+        logError(error);
+        return { error: error }
+    }
+}
+
+export async function editComment({ commentID, content }: { commentID: string, content: string }) {
+    try {
+        const editedComment = await prisma.comment.update({
+            where: {
+                id: commentID,
+            },
+            data: {
+                content: content,
+                updatedAt: new Date(),
+                edited: true,
+            },
+        });
+
+        return editedComment
+    } catch ( error ) {
+        logError(error);
+        return { error: error }
+    }
+}
+
+export async function getPostComments({ postID }: { postID: string }) {
+    try {
+        const postComments = await prisma.comment.findMany({
+            where: {
+                postId: postID,
+                replyTo: null,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        image: true,
+                    }
+                }
+            }
+        });
+
+        return postComments
+    } catch ( error ) {
+        logError(error);
+        return { error: error }
+    }
+}
+
+export async function getComment({ commentID }: { commentID: string }) {
+    try {
+        const comment = await prisma.comment.findUnique({
+            where: {
+                id: commentID,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        image: true,
+                    }
+                }
+            }
+        });
+
+        return comment
+    } catch ( error ) {
+        logError(error);
+        return { error: error }
+    }
+}
+
+export async function getUserComments({ userID }: { userID: string }) {
+    try {
+        const userComments = await prisma.comment.findMany({
+            where: {
+                userId: userID,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        image: true,
+                    }
+                }
+            }
+        });
+
+        return userComments
+    } catch ( error ) {
+        logError(error);
+        return { error: error }
+    }
+}
+
+export async function createReply({ commentID, userID, postID, content }: { commentID: string, userID: string, postID: string, content: string }) {
+    try {
+        const reply = await prisma.comment.create({
+            data: {
+                userId: userID,
+                postId: postID,
+                content: content,
+                replyTo: commentID,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        image: true,
+                    }
+                }
+            }
+        });
+
+        return reply
+    } catch ( error ) {
+        logError(error);
+        return { error: error }
+    }
+}
+
+export async function getCommentReplies({ commentID }: { commentID: string }) {
+    try {
+        const replies = await prisma.comment.findMany({
+            where: {
+                replyTo: commentID,
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        username: true,
+                        image: true,
+                    }
+                }
+            }
+        });
+
+        return replies
+    } catch ( error ) {
+        logError(error);
+        return { error: error }
+    }
+}
+
+export async function checkIfReplies({ commentID }: { commentID: string }) {
+    try {
+        const replies = await prisma.comment.count({
+            where: {
+                replyTo: commentID,
+            },
+        });
+
+        return replies
+    } catch ( error ) {
+        logError(error);
+        return { error: error }
+    }
 }

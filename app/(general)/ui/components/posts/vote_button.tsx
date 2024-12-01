@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 import Dialog from "../dialog/dialog";
 
-export default function VoteButton({ postID, userID }: { postID: string, userID: string }) {
+export default function VoteButton({ postID, userID, sessionID }: { postID: string, userID: string, sessionID: string }) {
     const [upvoted, setUpvoted] = useState<boolean>();
     const [downvoted, setDownvoted] = useState<boolean>();
     const [totalUpvotes, setTotalUpvotes] = useState<number>(0);
@@ -19,6 +19,7 @@ export default function VoteButton({ postID, userID }: { postID: string, userID:
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionID}`
             },
             body: JSON.stringify({ "postID": `${postID}` })
         })
@@ -34,7 +35,7 @@ export default function VoteButton({ postID, userID }: { postID: string, userID:
                 }
             })
         })
-    }, [postID]);
+    }, [postID, sessionID]);
 
     useEffect(() => {
         setIsLoading(true); 
@@ -42,6 +43,7 @@ export default function VoteButton({ postID, userID }: { postID: string, userID:
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${sessionID}`
             },
             body: JSON.stringify({ "userID": `${userID}`, "postID": `${postID}` })
         })
@@ -64,7 +66,7 @@ export default function VoteButton({ postID, userID }: { postID: string, userID:
             });
         })
         setIsLoading(false);
-    }, [postID, userID, totalUpvotes, totalDownvotes]);
+    }, [postID, userID, totalUpvotes, totalDownvotes, sessionID]);
 
     function upvote() {
         setDownvoted(false);
@@ -73,6 +75,7 @@ export default function VoteButton({ postID, userID }: { postID: string, userID:
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${sessionID}`
                 },
                 body: JSON.stringify({ "userID": `${userID}`, "postID": `${postID}` })
             })
@@ -89,6 +92,7 @@ export default function VoteButton({ postID, userID }: { postID: string, userID:
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${sessionID}`
                 },
                 body: JSON.stringify({ "userID": `${userID}`, "postID": `${postID}` })
             })
@@ -110,6 +114,7 @@ export default function VoteButton({ postID, userID }: { postID: string, userID:
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${sessionID}`
                 },
                 body: JSON.stringify({ "userID": `${userID}`, "postID": `${postID}` })
             })
@@ -126,6 +131,7 @@ export default function VoteButton({ postID, userID }: { postID: string, userID:
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${sessionID}`
                 },
                 body: JSON.stringify({ "userID": `${userID}`, "postID": `${postID}` })
             })

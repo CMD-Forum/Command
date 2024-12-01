@@ -18,17 +18,18 @@ export default async function UserPage({ params }: { params: { name: string } })
 
     const user = await prisma.user.findUnique({
         where: {
-          username: params.name
-        }
-    })
+          username: params.name,
+        },
+    });
 
     if ( user ) {
+
         const user_post_count = await prisma.post.count({
             where: {
                 authorId: user.id
             }
-        })        
-
+        })
+        
         return (
           <main className="flex min-h-screen flex-col w-full">
             <div className="error flex flex-col w-full">

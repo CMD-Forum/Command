@@ -4,12 +4,14 @@ import { BookmarkIcon } from "@heroicons/react/16/solid";
 import { BookmarkIcon as BookmarkIconOutline } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
 
+import { useSession } from "@/app/(general)/lib/sessioncontext";
+
 export function SavePostButton({ 
-    userID, 
-    postID 
-}: { 
-    userID: string, 
-    postID: string 
+    userID,
+    postID
+}: {
+    userID: string,
+    postID: string
 }) {
 
     // TO-DO: Optimize this because it makes 10 requests each page load
@@ -17,17 +19,20 @@ export function SavePostButton({
     const [saved, setSaved] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
+    const session = useSession();
+
     useEffect(() => {
         setIsLoading(true); 
         fetch("/api/posts/checkSaved", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${session.session?.id}`
             },
             body: JSON.stringify({ "userID": `${userID}`, "postID": `${postID}` })
         })
         .then((res) => {
-            if ( res.status === 400 ) {
+            if ( res.status === 201 ) {
                 setSaved(true);
             } else {
                 setSaved(false);
@@ -35,7 +40,7 @@ export function SavePostButton({
             setIsLoading(false);
             return res.json();
         })        
-    }, [postID, userID])
+    }, [postID, session.session?.id, userID])
 
     function SavePost() {
         if ( saved === false ) {
@@ -43,8 +48,9 @@ export function SavePostButton({
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.session?.id}`
                 },
-                body: JSON.stringify({ "userID": `${userID}`, "postID": `${postID}` })
+                body: JSON.stringify({ "postID": `${postID}` })
             })
             .then((res) => {
                 setSaved(true);
@@ -55,8 +61,9 @@ export function SavePostButton({
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.session?.id}`
                 },
-                body: JSON.stringify({ "userID": `${userID}`, "postID": `${postID}` })
+                body: JSON.stringify({ "postID": `${postID}` })
             })
             .then((res) => {
                 if ( res.status === 200 ) {

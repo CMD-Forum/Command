@@ -205,7 +205,7 @@ export default function CreatePostForm() {
             {/* */}
 
             <button type="submit" className="navlink-full !w-full sm:!w-fit justify-center min-w-[62px]">
-                {isLoading ? <img src="/spinner.svg" alt="Submitting..." className="spinner"/>  : null }    
+                {isLoading ? <img src="/spinner.svg" alt="Submitting..." className="spinner"/>  : null }
                 Submit
             </button>
 

@@ -32,7 +32,7 @@ export function logError( message: any ) {
 
 export function logWarning( message: any ) {
     const timestamp = getFormattedTimestamp();
-    console.warn(`[${timestamp}] [WRN] ${message}`)
+    console.warn(`[${timestamp}] [WARN] ${message}`)
 }
 
 /**

@@ -1,23 +1,40 @@
 import { NextResponse } from "next/server";
 
+import { lucia } from "@/app/(general)/lib/auth";
 import { checkIfVoted, removeDownvote } from "@/app/(general)/lib/data";
 import { logError } from "@/app/(general)/lib/utils";
-
-// TO-DO: Add authentication
 
 export async function POST( req: Request ) {
 
     try {
-        const body = await req.json();
-        let { userID, postID } = body;
-        if ( ! userID || ! postID ) {
-            return NextResponse.json({ message: "userID and postID are required." }, { status: 400 });
+
+        const authorizationHeader = req.headers.get("Authorization");
+        const sessionId = lucia.readBearerToken(authorizationHeader ?? "");
+
+        if ( ! sessionId ) {
+            return new NextResponse(null, {
+                status: 401
+            });
+        }   
+        
+        const { user } = await lucia.validateSession(sessionId);
+
+        if ( ! user?.id ) {
+            return new NextResponse(null, {
+                status: 401
+            });
         }
 
-        const voted = await checkIfVoted({ userID: userID, postID: postID });
+        const body = await req.json();
+        let { postID } = body;
+        if ( ! postID ) {
+            return NextResponse.json({ message: "postID is required." }, { status: 400 });
+        }
+
+        const voted = await checkIfVoted({ userID: user.id, postID: postID });
 
         if ( voted.downvote === true ) {
-            const removedDownvote = await removeDownvote({ userID: userID, postID: postID });
+            const removedDownvote = await removeDownvote({ userID: user.id, postID: postID });
             return NextResponse.json(removedDownvote, { status: 200 });
         }
               

@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import dayjs from "@/app/(general)/lib/dayjs";
+
 import { prisma } from "../../../lib/db";
 import ProfileImage from "../account/ProfileImage";
 
@@ -24,14 +26,13 @@ export async function CommunityAdministrators({ communityId }: { communityId: st
 
     const admins = await prisma.communityAdminship.findMany({ where: { communityId: communityId }});
 
-    if ( ! admins ) {
+    if ( ! admins || admins === null || admins === undefined || admins.length <= 0 ) {
         return (
-            <div className="p-2 pt-12 lg:pb-12 lg:p-12 lg:px-48">
-                <div className='flex flex-col items-center justify-center w-full relative group transition-all bg-card h-[174px] rounded-lg px-5 py-5'>
-                    <p className='md:!header-2 header-4 !text-center'>We couldn&apos;t find any administrators.</p>
-                    <p className='subtitle !text-center'>This shouldn&apos;t happen, try reloading the page.</p>
-                </div>            
-            </div>            
+            <div className="flex flex-row gap-4 w-full">
+                <div className="bg-card border-0 border-border p-4 rounded-lg flex flex-row gap-3 items-center w-full">
+                    <p>This community doesn&apos;t have any administrators.</p>
+                </div>     
+            </div>
         );
     } else if ( admins ) {
         return (
@@ -46,13 +47,14 @@ export async function CommunityAdministrators({ communityId }: { communityId: st
 
                     if ( user ) {
                         return (
-                            <div key={user.id} className="flex flex-row gap-4 w-full">
-                                <div className="bg-card border-0 border-border p-3 rounded-lg flex flex-row gap-3 items-center w-full">
+                            <Link href={`/user/${user.username}`} key={user.id} className="hover:bg-card active:bg-card border-0 border-border p-4 rounded-lg flex flex-col gap-1 w-full">
+                                <div className="flex gap-2">
                                     <ProfileImage user={user} imgSize={"5"} />
-                                    <Link href={`/user/${user.username}`} className="transition-all subtitle hover:!text-white">{user?.username}</Link>   
-                                </div>     
-                            </div>    
-                        )                            
+                                    <Link href={`/user/${user.username}`} className="transition-all subtitle hover:!text-white">{user?.username}</Link>                                        
+                                </div>
+                                <p>Since the {dayjs(admin.createdAt).format("Do [of] MMMM[,] YYYY")}.</p>
+                            </Link>
+                        )
                     } else {
                         return (
                             <p key={admin.userId} className="subtitle">Sorry, this admin couldn&apos;t be displayed.</p>

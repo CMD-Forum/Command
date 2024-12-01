@@ -6,6 +6,10 @@ import { useEffect, useState } from "react";
 
 import { createUserMembershipRecord, deleteUserMembershipRecord, getAllUserMembershipRecords } from "../../lib/data";
 
+/**
+ * @deprecated Import from `@/app/(general)/ui/posts/save_post_button.tsx` instead.
+ */
+
 export function SavePostButton({ 
     userID, 
     postID 

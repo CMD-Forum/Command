@@ -71,13 +71,17 @@ export const CreateCommunitySchema = z.object({
         .min(2, "All communitys have to be 2 characters or over.")
         .max(20, "All communitys have a maximum of 20 characters.")
         .transform(value => value.replace(/\s+/g, '')),
-    description: z
+    short_description: z
         .string()
         .min(5, "Description must be at least 5 characters.")
         .max(500, "Description must be no more than 500 characters."),
+    sidebar_description: z
+        .string()
+        .min(15, "Sidebar description must be at least 15 characters.")
+        .max(50000, "Sidebar description must be no more than 50,000 characters.")
+        .transform(value => value.replace(/[^a-zA-Z0-9\s\n!@()[\]"'£$%^&*_\-+=;:.,/\\{}!\\[]/g, '')),
     image_url: z
         .string()
         .url( { message: "Image must be a URL and start with `https://`" } )
         .min(1, "Your URL must not be empty.")
-
 })

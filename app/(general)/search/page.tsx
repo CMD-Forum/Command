@@ -31,22 +31,14 @@ export default function Search({
                 <h1 className="header">Search</h1>
                 <p className="subtitle">Find that post you liked.</p>   
             </div>
-            <div className='flex flex-row lg:pb-12 px-4 mb-6 gap-2'>
+            <div className='flex flex-row mb-4 px-4 gap-2'>
                 <SearchBar />   
                 <div className='flex flex-row gap-2'>
-                    <Menu defaultPlacement={"bottom-start"}>
-                        <MenuTrigger><button className='navlink !px-2 lg:!px-3'><ChartBarIcon className='w-5 h-5' /><span className='hidden lg:flex'>Sort</span></button></MenuTrigger>
-                        <MenuContent>
-                            <MenuLink text='Relevance' link={"/"} icon={<MagnifyingGlassIcon />} />
-                            <MenuLink text='Hot' link={"/"} icon={<BoltIcon />} />
-                            <MenuLink text='Rising' link={"/"} icon={<ArrowTrendingUpIcon />} />                            
-                        </MenuContent>
-                    </Menu>
                     <Link className={"navlink-full !px-2 lg:!px-3"} href={"/create"}><PlusIcon className={"w-5 h-5"} /><span className='hidden lg:flex'>Create</span></Link>                    
                 </div>             
             </div>
 
-            <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-4 px-6 mb-4'>
                 {query ?
                     <SearchResults query={query} currentPage={currentPage} type={"post"} />
                 :

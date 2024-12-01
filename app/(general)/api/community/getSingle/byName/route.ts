@@ -38,7 +38,3 @@ export async function POST( req: Request ) {
         return NextResponse.json({ message: "Error occurred while fetching community."}, { status: 500 })
     }
 }
-
-export async function GET() {
-    return NextResponse.json({ message: "Use POST to get a single community here, or use GET at the /api/community/getAll endpoint." }, {status: 400})
-}

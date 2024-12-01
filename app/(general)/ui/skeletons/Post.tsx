@@ -51,7 +51,6 @@ export function FullPostSkeleton() {
 export function CardPostSkeleton() {
     return (
         <div className="flex flex-col sm:flex-row w-full items-center gap-4 group transition-all bg-card border-0 border-border group-hover/title:!border-white h-fit rounded px-6 py-6">
-            <div className='bg-border rounded animate-pulse hidden md:flex min-w-[146px] !w-[146px] !h-[146px]' /> 
             <div className="flex w-full bg-transparent h-fit flex-col flex-shrink min-w-0">
                 <div className="text-sm z-20 w-fit flex flex-col min-w-0">
                     <div className='flex flex-col min-w-0'>
@@ -71,8 +70,8 @@ export function CardPostSkeleton() {
 
                 <div className='flex flex-row mt-4 justify-between min-w-0'>
                     <div className='flex flex-row gap-2 min-w-0'>
-                        <div className='bg-border rounded animate-pulse w-[38px] h-[38px] min-w-0' /> 
-                        <div className='bg-border rounded animate-pulse w-[38px] h-[38px] min-w-0' /> 
+                        <div className='bg-border rounded animate-pulse w-[105px] h-[38px] min-w-0' /> 
+                        <div className='bg-border rounded animate-pulse w-[123px] h-[38px] min-w-0' /> 
                         <div className='bg-border rounded animate-pulse w-[85px] h-[38px] min-w-0' /> 
                     </div>
                     <div className='bg-border rounded animate-pulse w-[38px] h-[38px] min-w-0' />                         

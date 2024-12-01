@@ -25,7 +25,8 @@ export default function CreateCommunityForm() {
       resolver: zodResolver(CreateCommunitySchema),
       defaultValues: {
         name: '',
-        description: '',
+        short_description: '',
+        sidebar_description: '',
         image_url: '',
       },
     });
@@ -52,7 +53,8 @@ export default function CreateCommunityForm() {
   
         const communityData = {
             name: values.name,
-            description: values.description,
+            description: values.short_description,
+            sidebar_md: values.sidebar_description,
             image: values.image_url,
             creatorUserID: session.user.id
         };
@@ -104,14 +106,27 @@ export default function CreateCommunityForm() {
 
             <p className="flex gap-0.5 subtitle required">Description</p>
             <input
-                {...form.register('description')}
+                {...form.register('short_description')}
                 placeholder="Welcome to my community!"
-                className={`generic_field ${form.formState.errors.description ? "error" : ""}`}
+                className={`generic_field ${form.formState.errors.short_description ? "error" : ""}`}
             />
 
-            {form.formState.errors.description && (
+            {form.formState.errors.short_description && (
                 // @ts-expect-error
-                <ErrorMessage message={form.formState.errors.description.message} />
+                <ErrorMessage message={form.formState.errors.short_description.message} />
+            )}
+
+            {/* */}
+
+            <p className="flex gap-0.5 subtitle required">Sidebar Content</p>
+            <textarea
+                {...form.register('sidebar_description')}
+                className={`h-fit max-h-96 min-h-16 py-1 ${form.formState.errors.sidebar_description ? "error" : ""}`}
+            />
+
+            {form.formState.errors.sidebar_description && (
+                // @ts-expect-error
+                <ErrorMessage message={form.formState.errors.sidebar_description.message} />
             )}
 
             {/* */}

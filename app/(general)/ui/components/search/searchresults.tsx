@@ -1,6 +1,6 @@
 import { prisma } from "@/app/(general)/lib/db";
 
-import { CardPost } from "../posts/post";
+import { PostListCustomData } from "../posts/post_list_custom";
 
 interface SearchResultProps {
     query: string;
@@ -15,27 +15,18 @@ export default async function SearchResults(search: SearchResultProps) {
     const formattedQuery = search.query
         .split(' ')
         .map(word => {
-
             if (word.startsWith('-')) {
-
                 return '!' + word.slice(1);
-
             } else if (word.startsWith('+')) {
-
                 return word.slice(1);
-
             } else {
-
                 return word;
-
             }
         })
         .join(' & ');
 
     if ( search.type === "post" ) {
-
         results = await prisma.post.findMany({
-
             orderBy: {
                 _relevance: {
                     fields: ['title', 'content'],
@@ -71,7 +62,6 @@ export default async function SearchResults(search: SearchResultProps) {
                 author: {
                     select: {
                         id: true,
-                        name: true,
                         username: true,
                         createdAt: true,
                         updatedAt: true,
@@ -83,18 +73,24 @@ export default async function SearchResults(search: SearchResultProps) {
                     select: {
                         id: true,
                         name: true,
+                        // eslint-disable-next-line camelcase
                         display_name: true,
                         image: true,
                         public: true,
                         description: true,
-                    }
-                }
-            }
+                        admins: {
+                            select: {
+                                userId: true,
+                            },
+                        },
+                    },
+                },
+            },
         });
         
         return (
             <div className="flex flex-col">
-                {results && results.map((result) => (
+                {/*{results && results.map((result) => (
                     <div key={result.id}>
                         <CardPost 
                             id={result.id}
@@ -105,13 +101,17 @@ export default async function SearchResults(search: SearchResultProps) {
                             imageurl={result.imageurl}
                             imagealt={result.imagealt}
                             public={result.public}
+                            // @ts-ignore
                             community={result.community}
                             author={result.author}
                         />
                         <hr className='mx-4 mt-1/2 mb-1/2' />
                     </div>
 
-                ))}
+                ))}*/}
+                {results &&
+                    <PostListCustomData data={results} />
+                }
                 {/*<div className='flex gap-4 items-center px-6 mt-5'>
                     <button onClick={() => lastPage()} className='navlink !px-2' disabled={ page === 0 ? true : false } aria-label='Last Page'><ChevronLeftIcon className='w-5 h-5' /></button>  
                     <p className='subtitle h-fit'>{ page + 1 } of { totalPages || "1" }</p>

@@ -287,7 +287,7 @@ export function CommunityInfobar( { community }: { community: Community } ) {
     return (
         <div>
             <div className='flex-row gap-2 rounded-lg-md w-full bg-transparent'>
-                <div className='flex-col bg-transparent border-0 border-border'>
+                <div className='flex justify-between bg-transparent border-0 border-border items-center'>
                     <div className='flex flex-row gap-3 items-center'>
                         <img src={community.image} className='h-[56px] rounded-lg' alt={`${community.name}'s Community Image`} />
                         <div className='flex flex-col'>
@@ -296,34 +296,8 @@ export function CommunityInfobar( { community }: { community: Community } ) {
                         </div>
                     </div>
 
-                    <div className='flex flex-row gap-3 items-center mt-2'>
-                        <div className='flex flex-row gap-3'>
-                            <div className='flex flex-row gap-1 items-center'>
-                                <CalendarDaysIcon className='w-[20px] text-gray-300' />
-                                <p className='subtitle'>{community.createdAt.toLocaleDateString()}</p>  
-                            </div>
-                            
-                            <div className='flex flex-row gap-1 items-center'>
-                                <UserIcon className='w-[20px] text-gray-300' />
-                                <MemberCount communityID={community.id} />
-                            </div>
-
-                            <div className='flex flex-row gap-1 items-center'>
-                                <PencilSquareIcon className='w-[20px] text-gray-300' />
-                                <PostCount communityID={community.id} />
-                            </div>
-
-                            <div className='flex flex-row gap-1 items-center'>
-                                <ChatBubbleBottomCenterTextIcon className='w-[20px] text-gray-300' />
-                                <p className='subtitle'>---</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className='flex flex-row gap-2 mt-4 mb-4'>
+                    <div className='flex flex-row gap-2 h-fit'>
                         <JoinCommunityButton userID={session.user?.id} communityID={community.id} />
-                        <Link className='navlink justify-center items-center !px-2 md:!px-3' href={`/c/${community.name}/info`}><BookOpenIcon className="font-medium h-5 w-5" /><p className='items-center h-full hidden md:flex'>Information</p></Link>
-                        <Link className='navlink justify-center items-center !px-2 md:!px-3' href={`/c/${community.name}/moderation`}><ShieldCheckIcon className="font-medium h-5 w-5" /><p className='items-center h-full hidden md:flex'>Moderation</p></Link>    
                     </div>
                 </div>
             </div>  

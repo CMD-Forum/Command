@@ -123,7 +123,7 @@ export function DialogContent({
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ ease: "backOut", duration: 0.3 }} // Stole this off mono-svelte
-                                className={`bg-background rounded-lg text-wrap h-fit !min-w-0 max-w-[425px] border-border border-0 flex flex-col absolute`}
+                                className={`bg-background rounded-lg text-wrap h-fit !min-w-0 !max-w-[1024px] overflow-x-scroll border-border border-0 flex flex-col absolute`}
                                 id="dialog-container"
                                 tabIndex={0}
                             >
@@ -137,7 +137,7 @@ export function DialogContent({
                                 <div className="">
                                     {/* @ts-ignore */}
                                     <DialogContext.Provider value={{ isOpen, setIsOpen }}>
-                                        { children }    
+                                        { children }
                                     </DialogContext.Provider>
                                 </div>
                             </motion.div>    
@@ -278,7 +278,7 @@ export function DialogBody ({
     className?: string 
 }) {
     return (
-        <div className={`px-6 pb-6 ${className}`}>
+        <div className={`px-6 pb-6 overflow-scroll max-w-[350px] md:max-w-[750px] lg:max-w-[900px] 2xl:max-w-[1024px] ${className}`}>
             { children }
         </div>        
     );

@@ -61,6 +61,11 @@ html, body {
   height: 0px;
 }
 
+.markdown-body a {
+  @apply underline;
+  @apply hover:no-underline;
+}
+
 a, button {
   @apply outline-none #{!important};
   @apply focus-visible:ring-2 #{!important};
@@ -187,7 +192,9 @@ code {
 
 .navlink.small, .navlink-full.small, .navlink-destructive.small, .navlink-emphasis.small, .navlink-ghost.navlink.small {
   @apply py-1 #{!important};
-  @apply px-2 #{!important};
+  @apply px-2;
+  @apply text-xs #{!important};
+  @apply rounded-md #{!important};
 }
 
 .navlink-destructive {
@@ -445,7 +452,7 @@ input[type="checkbox"]:not(:disabled):checked {
 // MD
 
 .markdown-body, .wmde-markdown {
-  @apply bg-transparent #{!important};
+  @apply bg-background;
 }
 
 .markdown-body *, .wmde-markdown * {
@@ -759,6 +766,59 @@ hr {
   @apply text-gray-300;
   @apply font-medium #{!important};
   @apply text-sm;  
+}
+
+// Table
+
+table th,
+table td,
+table th,
+table td {
+  @apply px-2;
+  @apply py-1;
+  @apply border-0;
+  @apply border-border;
+}
+
+table {
+  @apply rounded-md #{!important};
+  @apply border-spacing-0 #{!important};
+  @apply border-collapse #{!important};
+  @apply border-1;
+  @apply border-border;
+}
+
+table thead {
+  @apply bg-card;
+}
+
+table tbody tr {
+  @apply even:bg-card;
+  @apply text-gray-300;
+  @apply hover:text-white;
+  @apply focus:text-white;
+  @apply transition-all;
+}
+
+table th:not(:last-child),
+table td:not(:last-child) {
+  @apply border-r-1;
+  @apply border-border;
+}
+
+table>thead>tr:not(:last-child)>th,
+table>thead>tr:not(:last-child)>td,
+table>tbody>tr:not(:last-child)>th,
+table>tbody>tr:not(:last-child)>td,
+table>tfoot>tr:not(:last-child)>th,
+table>tfoot>tr:not(:last-child)>td,
+table>tr:not(:last-child)>td,
+table>tr:not(:last-child)>th,
+table>thead:not(:last-child),
+table>tbody:not(:last-child),
+table>tfoot:not(:last-child) {
+  @apply border-b-1;
+  @apply border-b-border;
 }
 
 // Heroicon

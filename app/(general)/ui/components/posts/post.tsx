@@ -2,14 +2,13 @@
 
 import { ArchiveBoxXMarkIcon, ChatBubbleLeftEllipsisIcon } from '@heroicons/react/16/solid';
 import { EllipsisVerticalIcon, ShareIcon } from '@heroicons/react/24/solid';
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link';
 import { useState } from 'react';
 import Markdown from 'react-markdown';
 import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm'
 
+import dayjs from '@/app/(general)/lib/dayjs'
 import { useSession } from "@/app/(general)/lib/sessioncontext";
 import { Post } from '@/types/types';
 
@@ -18,10 +17,11 @@ import Dialog from '../dialog/dialog';
 import Menu, { MenuButton, MenuLink, MenuShare } from '../menu/menu';
 import { SavePostButton } from '../posts/save_post_button';
 import { BackButtonNormal } from './back_button';
+import CommentList from './comments/comment_list';
+import CreateComment from './comments/create_comment';
+import { DeleteAsAdminButton, DeleteAsAuthorButton } from './delete_button';
 import OpengraphDisplay from './og_display';
 import VoteButton, { SignedOutVoteButton } from './vote_button';
-
-dayjs.extend(relativeTime);
 
 /**
  * Horizontal card display of the given post.
@@ -64,10 +64,12 @@ dayjs.extend(relativeTime);
 export function CardPost( post: Post ) {
     const session = useSession();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
+    const [adminDeleteDialogOpen, setAdminDeleteDialogOpen] = useState<boolean>(false);
+
+    const isAdmin = post.community.admins.some(admin => admin.userId === session.user?.id);
 
     return (
-
-        <div className="flex flex-col sm:flex-row w-full items-center gap-4 relative group transition-all bg-transparent hover:bg-card active:bg-card hover:cursor-pointer border-0 border-border group-hover/title:!border-white h-fit rounded-lg p-6">
+        <div className="flex flex-col sm:flex-row w-full items-center gap-4 relative group transition-all bg-card border-0 border-border group-hover/title:!border-white h-fit rounded-lg p-6">
             <div className="flex w-full bg-transparent h-fit flex-col">
                 <div className="text-sm z-20 w-fit flex flex-col">
                     <div className='flex flex-col'>
@@ -115,11 +117,26 @@ export function CardPost( post: Post ) {
                     <>
                         <Dialog.Controlled isOpen={deleteDialogOpen} setIsOpen={setDeleteDialogOpen}>
                             <Dialog.Content>
-                                <Dialog.Title>Delete this post? (Unimplemented)</Dialog.Title>
+                                <Dialog.Title>Delete this post?</Dialog.Title>
                                 <Dialog.Subtitle>This action cannot be reversed, choose wisely.</Dialog.Subtitle>
                                 <Dialog.ButtonContainer>
                                     <Dialog.CloseButton><button className='navlink'>Close</button></Dialog.CloseButton>
-                                    <button className='navlink-destructive' disabled>Delete</button>
+                                    { session.user?.id === post.authorId &&
+                                        <DeleteAsAuthorButton postID={post.id} btnClassName={"navlink-destructive"} />
+                                    }
+                                </Dialog.ButtonContainer>
+                            </Dialog.Content>
+                        </Dialog.Controlled>
+
+                        <Dialog.Controlled isOpen={adminDeleteDialogOpen} setIsOpen={setAdminDeleteDialogOpen}>
+                            <Dialog.Content>
+                                <Dialog.Title>Delete this post?</Dialog.Title>
+                                <Dialog.Subtitle>This will be recorded in the moderation logs.</Dialog.Subtitle>
+                                <Dialog.ButtonContainer>
+                                    <Dialog.CloseButton><button className='navlink'>Close</button></Dialog.CloseButton>
+                                    { isAdmin &&
+                                        <DeleteAsAdminButton postID={post.id}  btnClassName={"navlink-destructive"} />
+                                    }
                                 </Dialog.ButtonContainer>
                             </Dialog.Content>
                         </Dialog.Controlled>
@@ -127,7 +144,7 @@ export function CardPost( post: Post ) {
                             <div className='flex flex-row gap-2'>
                                 { session.user?.id 
                                 ? 
-                                    <VoteButton postID={post.id} userID={session.user?.id} />
+                                    <VoteButton postID={post.id} userID={session.user?.id} sessionID={session.session.id} />
                                 :
                                     <SignedOutVoteButton postID={post.id} />
                                 }
@@ -144,22 +161,19 @@ export function CardPost( post: Post ) {
                                     <MenuLink text={post.community.name} icon={<img src={post.community.image} alt={post.community.name} />} link={`/c/${post.community.name}`}></MenuLink>
                                     <hr className='mt-1 !mb-1'/>
                                     <MenuShare icon={<ShareIcon />} text={post.title} title={"Command"} url={`${process.env.NEXT_PUBLIC_CURRENT_URL}posts/${post.id}`} />
-                                    { session 
-                                    ?
+                                    {session.user?.id === post.author.id || isAdmin && session.user?.id !== post.author.id ? <hr className='mt-1 !mb-1'/> : null}
+                                    { session.user?.id === post.authorId
+                                    &&
                                         <>
-                                            { session.user?.id === post.authorId 
-                                            ?
-                                            <>
-                                                <hr className='mt-1 !mb-1'/>
-                                                <MenuButton icon={<ArchiveBoxXMarkIcon />} text={"Delete"} onClick={() => setDeleteDialogOpen(true)} destructive={true} />                                 
-                                            </>
-                                            :
-                                            null
-                                            }                           
+                                            <MenuButton icon={<ArchiveBoxXMarkIcon />} text={"Delete"} onClick={() => setDeleteDialogOpen(true)} destructive={true} />
                                         </>
-                                    :
-                                        null
-                                    }                                    
+                                    }
+                                    { isAdmin && session.user?.id !== post.author.id
+                                    &&
+                                        <>
+                                            <MenuButton icon={<ArchiveBoxXMarkIcon />} text={"Delete as Admin"} onClick={() => setAdminDeleteDialogOpen(true)} destructive={true} />
+                                        </>
+                                    }
                                 </Menu.Content>
                             </Menu>
                         </div>                    
@@ -273,9 +287,10 @@ export function FullPost( post: Post ) {
                             </Dialog.Controlled>
                             <div className='flex flex-row w-full h-fit rounded-lg mt-4 justify-between'>
                                 <div className='flex flex-row gap-2'>
-                                    <VoteButton postID={post.id} userID={session.user.id} />
-                                    <button className='navlink !px-2 lg:!px-3' disabled onClick={() => { throw new Error("Feature Unimplemented") }}><ChatBubbleLeftEllipsisIcon className="w-5 h-5" aria-label='Submit Comment' /><span className='hidden lg:flex'>Submit Comment</span></button>
-                                    <SavePostButton userID={session.user?.id} postID={post.id} />                                
+                                    <VoteButton postID={post.id} userID={session.user.id} sessionID={session.session.id} />
+                                    <CreateComment postID={post.id} userID={session.user.id} />
+                                    <SavePostButton userID={session.user?.id} postID={post.id} />
+                                    <div id='comment-refresh-container' />
                                 </div>
                                 <Menu>
                                     <Menu.Trigger><button className='navlink !px-2' aria-label='More Options'><EllipsisVerticalIcon className='w-5 h-5' /></button></Menu.Trigger>
@@ -302,7 +317,11 @@ export function FullPost( post: Post ) {
                                         }
                                     </Menu.Content>
                                 </Menu>
-                            </div>                        
+                            </div>
+
+                            <div id='comment-submit-box'></div>
+
+                            <CommentList postID={post.id} />                     
                         </>
                     }
                 </div>

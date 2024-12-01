@@ -2,6 +2,8 @@
  * This is a file for all the types.
  */
 
+import { Comment, Prisma } from "@prisma/client";
+
 /**
  * PostAuthor
  * @memberof Post
@@ -80,6 +82,10 @@ export interface PostCommunity {
      * Whether the community is public or not.
      */
     public: boolean;
+
+    admins: {
+        userId: string
+    }[]
 
 }
   
@@ -424,4 +430,34 @@ export type og = {
      */
 
     html: string;
+}
+
+// Comments
+
+export interface PostCommentType extends Comment {
+    user: {
+        id: string;
+        username: string;
+        image: string;
+    }
+}
+
+// Error Handling
+
+export interface DataFunctionError {
+    error: {
+        error: string;
+        status: number;
+    }
+}
+
+// Sorting
+
+export enum SortOptions {
+    HOT,
+    NEW,
+    OLD,
+    TOP,
+    CONTROVERSIAL,
+    COMMENTS
 }
