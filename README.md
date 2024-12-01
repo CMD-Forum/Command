@@ -1,3 +1,6 @@
+> [!NOTICE]
+> This repository is still being worked on, it's just that version 1.5 is taking way longer than expected.
+
 
 <h1 align="center">CMD Forum</h1>
 
