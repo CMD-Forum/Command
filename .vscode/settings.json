@@ -1,3 +1,20 @@
 {
-    "typescript.tsdk": "node_modules\\typescript\\lib"
+    "i18n-ally.localesPaths": ["translation/dictionaries"], // E.g. "./messages"
+    "i18n-ally.keystyle": "nested",
+    "i18n-ally.extract.ignored": [
+        "Secondary"
+    ],
+    "i18n-ally.extract.ignoredByFiles": {
+        "src\\components\\community\\communityCard.tsx": [
+            "This community doesn't have a description."
+        ]
+    },
+    // allow autocomplete for ArkType expressions like "string | num"
+    "editor.quickSuggestions": {
+        "strings": "on"
+    },
+    // prioritize ArkType's "type" for autoimports
+    "typescript.preferences.autoImportSpecifierExcludeRegexes": [
+        "^(node:)?os$"
+    ],
 }

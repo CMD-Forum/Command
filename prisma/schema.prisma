@@ -1,129 +1,425 @@
-//                                                                                                                                   //
-// This file is the schema for Prisma.                                                                                               //
-// Run ``npx prisma migrate`` after connecting to your database.                                                                     //
-//                                                                                                                                   //
-// Note that Prisma Studio seems to mess up markdown formatting, so try to avoid using it for anything other than one line markdown. //
-// It's still fine for non-markdown stuff.                                                                                           //                                                                                     //
-//                                                                                                                                   //
-
 generator client {
-  provider        = "prisma-client-js"
-  output          = "../node_modules/.prisma/client"
-  seed            = "node prisma/seed.js"
-  previewFeatures = ["fullTextSearch"]
-}
+  provider               = "prisma-client"
+  output                 = "../generated/prisma"
+  // output                 = "../node_modules/.prisma/client"
 
-generator docs { /// Thanks, prisma-docs-generator: https://github.com/pantharshit00/prisma-docs-generator
-  provider = "node node_modules/prisma-docs-generator"
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
+  
+  previewFeatures        = ["fullTextSearchPostgres", "postgresqlExtensions", "queryCompiler", "driverAdapters"]
+  seed                   = "node prisma/seed.js"
 }
 
 datasource db {
-  provider = "postgresql" /// Change if using a different database, obviously.
-  url      = env("DATABASE_URL") /// Change this in your ``.env``.
-}
-
-enum UserRole {
-
-  ADMIN
-  MODERATOR
-  USER
-
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [pg_trgm]
 }
 
 model Community {
-  id             String   @id @default(cuid()) /// The CUID of the community.
-  createdAt      DateTime @default(now()) /// When the community was created.
-  updatedAt      DateTime @default(now()) @updatedAt /// When the community database entry was last updated.
-  name           String   @unique @default("") @db.VarChar(50) /// Name used in URL to find community, always lower case to prevent issues.
-  display_name   String   @unique @default("") @db.VarChar(50) /// Name shown anywhere other than the URL, can contain upper case letters since it is not used for identification.
-  description    String   @default("This community doesn&apos;t have a description.") /// Description of the community.
-  image          String   @default("/images/favicon/favicon.svg") /// Image that is shown for the community, defaults to the favicon.
-  public         Boolean  @default(true) /// If false, this community cannot be accessed and will not be shown. Currently unimplemented.
-  admin_ids      String[] @default([]) /// User CUIDS of the community administrator(s).
-  sidebar_md     String   @default("") /// Deprecated, do not use.
-  posts          Post[]   // Relation to all posts in this community.
+  id              String                   @id @unique @default(cuid())
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @default(now()) @updatedAt
+  name            String                   @unique @default("") @db.VarChar(50)
+  description     String                   @default("This community doesn't have a description.")
+  image           String                   @default("/images/favicon/favicon.svg")
+  public          Boolean                  @default(true)
+  bg_image        String                   @default("/images/default_community_bg.png")
+  sidebar_content String                   @default("")
+  searchIdx       Unsupported("tsvector")?
+  memberships     CommunityMembership[]
+  moderators      CommunityModerator[]
+  posts           Post[]
+  rules           CommunityRule[]
 }
 
 model Post {
-  id          String    @id @default(cuid()) /// The CUID of the post.
-  createdAt   DateTime  @default(now()) @db.Timestamptz(3) /// When the post was created.
-  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(3) /// When the post database entry was last updated.
-  title       String    @db.VarChar(255) /// The title of the post.
-  content     String    /// The main content of the post.
-  tagline     String    /// The tagline of the post. This is a small snippet of the post.
-  imageurl    String?   /// If the post is an image post, this is the images URL.
-  imagealt    String?   /// If the post is an image post, this is the images accessibility tag.
-  public      Boolean   @default(true) /// If false, this post cannot be accessed and will not be shown. Currently unimplemented.
-  authorId    String    /// The CUID of the posts author.
-  downvotes   Int       @default(0) /// How many downvotes the post has.
-  upvotes     Int       @default(0) /// How many upvotes the post has.
-  communityId String    @default("null") /// The CUID of the posts community.
-  author      User      @relation(fields: [authorId], references: [id])
-  community   Community @relation(fields: [communityId], references: [id])
+  id              String                   @id @unique @default(cuid())
+  createdAt       DateTime                 @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime                 @default(now()) @updatedAt @db.Timestamptz(3)
+  title           String                   @db.VarChar(255)
+  content         String
+  imageurl        String?
+  imagealt        String?
+  public          Boolean                  @default(true)
+  authorId        String
+  communityId     String                   @default("null")
+  href            String?
+  deletedByAdmin  Boolean?                 @default(false)
+  deletedByAuthor Boolean?                 @default(false)
+  imageblur       String?
+  searchIdx       Unsupported("tsvector")?
+  comments        Comment[]
+  downvotes       Downvotes[]
+  author          User                     @relation(fields: [authorId], references: [id])
+  community       Community                @relation(fields: [communityId], references: [id])
+  reports         Report[]
+  savedBy         SavedPosts[]
+  upvotes         Upvotes[]
 }
 
 model User {
-  id                 String      @id @default(cuid()) /// The CUID of the user.
-  email              String      @unique /// The user's email.
-  emailVerified      DateTime?   /// When the user verified their email, currently unimplemented.
-  emailLastUpdate    DateTime?   /// When the user last updated their email.
-  username           String      @unique /// The user's username.
-  usernameLastUpdate DateTime?   /// When the user last updated their username.
-  description        String      @db.VarChar(250) @default("This user has not set their description.") /// The users description, displayed on their profile and when a user hovers over their username.
-  password           String?     /// The users password, should be hashed.
-  createdAt          DateTime    @default(now()) /// When the user was created.
-  updatedAt          DateTime    @updatedAt /// When the user database entry was last updated.
-  name               String      /// Deprecated, do not use.
-  profile_image      String      @default("/images/favicon/favicon.svg") /// Deprecated, do not use.
-  image              String      @default("/images/favicon/favicon.svg") /// The profile image of the user.
-  posts              Post[]
-  Support            Support?    @relation(fields: [supportId], references: [authorId])
-  supportId          String?
-  role               UserRole    @default(USER) /// If the user is a normal user or a site administrator (not to be confused with a community administrator).
-  accounts           Account[]
-  sessions           Session[]
+  id                   String                   @id @unique @default(cuid())
+  email                String
+  emailVerified        Boolean?                 @default(false)
+  emailLastUpdate      DateTime?
+  name                 String                   @unique
+  username             String                   @unique
+  displayUsername      String?
+  usernameLastUpdate   DateTime?
+  description          String                   @default("This user has not set their description.") @db.VarChar(250)
+  createdAt            DateTime                 @default(now())
+  updatedAt            DateTime                 @updatedAt
+  image                String?
+  password_hash        String?
+  github_id            Int?                     @unique
+  public               Boolean                  @default(true)
+  searchIdx            Unsupported("tsvector")?
+  comments             Comment[]
+  commentDownvotes     CommentDownvotes[]
+  commentUpvotes       CommentUpvotes[]
+  memberships          CommunityMembership[]
+  moderatedCommunities CommunityModerator[]
+  receivedMessages     DirectMessage[]          @relation("Receiver")
+  sentMessages         DirectMessage[]          @relation("Sender")
+  downvotes            Downvotes[]
+  notifications        Notification[]
+  posts                Post[]
+  reportsSubjectOf     Report[]
+  savedPosts           SavedPosts[]
+  upvotes              Upvotes[]
+  reportsCreated       Report[]                 @relation("Reporter")
+  settings             UserSettings[]           @relation("UserToUserSettings")
+
+  sessions             Session[]
+  accounts             Account[]
+  passkeys             Passkey[]
+  apikeys              Apikey[]
+  role                 String                   @default("user")
+  banned               Boolean                  @default(false)
+  banReason            String?                  @default("")
+  banExpires           DateTime?
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id              String   @id
+  expiresAt       DateTime
+  token           String
+  createdAt       DateTime
+  updatedAt       DateTime
+  ipAddress       String?
+  userAgent       String?
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  impersonatedBy  String?
+
+  @@unique([token])
+  @@map("session")
 }
 
 model Account {
-  id                 String  @id @default(cuid()) /// The CUID of the account.
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
+  @@map("account")
 }
 
-model Session { /// Pretty sure this isn't used in JWT sessions but it's here anyway
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model VerificationToken {
+model Verification {
+  id         String    @id
   identifier String
-  token      String   @unique
-  expires    DateTime
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
 
-  @@unique([identifier, token])
+  @@map("verification")
 }
 
-model Support {
-  id        String @id @default(cuid())
-  authorId  String @unique
-  author    User[]
-  content   String @default("# Support Article \n Edit this article!")
-  title     String @default("Article has no name")
-  tagline   String @default("Article has no tagline")
+model Passkey {
+  id           String    @id
+  name         String?
+  publicKey    String
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  credentialID String
+  counter      Int
+  deviceType   String
+  backedUp     Boolean
+  transports   String?
+  createdAt    DateTime?
+
+  @@map("passkey")
+}
+
+model Apikey {
+  id                  String    @id
+  name                String?
+  start               String?
+  prefix              String?
+  key                 String
+  userId              String
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refillInterval      Int?
+  refillAmount        Int?
+  lastRefillAt        DateTime?
+  enabled             Boolean?
+  rateLimitEnabled    Boolean?
+  rateLimitTimeWindow Int?
+  rateLimitMax        Int?
+  requestCount        Int?
+  remaining           Int?
+  lastRequest         DateTime?
+  expiresAt           DateTime?
+  createdAt           DateTime
+  updatedAt           DateTime
+  permissions         String?
+  metadata            String?
+
+  @@map("apikey")
+}
+
+model UserSettings {
+  userID                  String          @id
+  /// Where the user is redirected when they click a link home (e.g the Command text in the navigation or footer).
+  defaultHomeRedirect     String          @default("/")
+  /// Whether the user's posts are public. Defaults to true.
+  postsPublic             Boolean         @default(true)
+  /// Whether the user's account is public. Defaults to true.
+  accountPublic           Boolean         @default(true)
+  /// Whether the user has 2FA enabled. Defaults to false, doesn't do anything currently.
+  twoFactorAuthentication Boolean         @default(false)
+  /// What type of 2FA the user has enabled. Defaults to NONE, doesn't do anything currently.
+  twoFactorMethod         TwoFactorMethod @default(NONE)
+  user                    User[]          @relation("UserToUserSettings")
+}
+
+model Upvotes {
+  userID    String
+  postID    String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @db.Timestamptz(3)
+  Post      Post     @relation(fields: [postID], references: [id])
+  User      User     @relation(fields: [userID], references: [id])
+
+  @@id([postID, userID], name: "upvoteID")
+}
+
+model Downvotes {
+  userID    String
+  postID    String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @db.Timestamptz(3)
+  Post      Post     @relation(fields: [postID], references: [id])
+  User      User     @relation(fields: [userID], references: [id])
+
+  @@id([postID, userID], name: "downvoteID")
+}
+
+model CommentUpvotes {
+  userID    String
+  commentID String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @db.Timestamptz(3)
+  Comment   Comment  @relation(fields: [commentID], references: [id])
+  User      User     @relation(fields: [userID], references: [id])
+
+  @@id([commentID, userID])
+}
+
+model CommentDownvotes {
+  userID    String
+  commentID String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @db.Timestamptz(3)
+  Comment   Comment  @relation(fields: [commentID], references: [id])
+  User      User     @relation(fields: [userID], references: [id])
+
+  @@id([commentID, userID])
+}
+
+model CommunityModerator {
+  userID      String
+  communityID String
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  Community   Community @relation(fields: [communityID], references: [id])
+  User        User      @relation(fields: [userID], references: [id])
+
+  @@id([userID, communityID])
+}
+
+model CommunityMembership {
+  userId      String
+  communityId String
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime  @default(now()) @db.Timestamptz(3)
+  community   Community @relation(fields: [communityId], references: [id])
+  user        User      @relation(fields: [userId], references: [id])
+
+  @@id([userId, communityId])
+}
+
+model CommunityRule {
+  id          String   @id @unique @default(cuid())
+  createdAt   DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+  communityID String
+  title       String
+  description String
+  community   Community @relation(fields: [communityID], references: [id])
+}
+
+model Comment {
+  id        String             @id @unique @default(cuid())
+  createdAt DateTime           @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime           @default(now()) @updatedAt @db.Timestamptz(3)
+  userId    String
+  postId    String
+  replyTo   String?
+  content   String
+  edited    Boolean            @default(false)
+  post      Post               @relation(fields: [postId], references: [id])
+  user      User               @relation(fields: [userId], references: [id])
+  downvotes CommentDownvotes[]
+  upvotes   CommentUpvotes[]
+  reports   Report[]
+}
+
+model ModerationLog {
+  id          String            @id @unique @default(cuid())
+  createdAt   DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime          @default(now()) @updatedAt @db.Timestamptz(3)
+  /// The UserId of the administrator who preformed this action.
+  adminId     String            @default("")
+  /// The action that was taken. See `ModlogAction` enum.
+  action      ModlogAction      @default(UNSPECIFIED)
+  /// Whether the action was taken on a user, post or comment (referred to as subject).
+  subjectType ModlogSubjectType @default(UNSPECIFIED)
+  /// The ID of the subject.
+  subjectId   String            @default("")
+  /// The communityId of the community where this action was preformed.
+  communityId String            @default("")
+}
+
+model Report {
+  id          String        @id @unique @default(cuid())
+  createdAt   DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime      @default(now()) @updatedAt @db.Timestamptz(3)
+  commentId   String?
+  postId      String?
+  reason      ReportReason
+  information String        @default("")
+  subjectType ReportSubject
+  userId      String?
+  comment     Comment?      @relation(fields: [commentId], references: [id])
+  post        Post?         @relation(fields: [postId], references: [id])
+  user        User?         @relation(fields: [userId], references: [id])
+  reporter    User[]        @relation("Reporter")
+}
+
+model Notification {
+  /// The CUID of the notification.
+  id         String   @id @unique @default(cuid())
+  /// When the notification was created.
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  /// When the notification database entry was last updated.
+  updatedAt  DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+  /// The title of the notification.
+  title      String   @db.VarChar(255)
+  /// The main content of the notification.
+  content    String
+  /// The link of the notification.
+  href       String?
+  /// The CUID of the receiver.
+  receiverId String   @default("null")
+  receiver   User     @relation(fields: [receiverId], references: [id])
+}
+
+model DirectMessage {
+  /// The CUID of the message.
+  id         String   @id @unique @default(cuid())
+  /// When the message was created.
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  /// When the message database entry was last updated.
+  updatedAt  DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+  /// The main content of the message.
+  content    String
+  /// The CUID of the receiver.
+  receiverId String   @default("null")
+  /// The CUID of the sender.
+  senderId   String   @default("null")
+  receiver   User     @relation("Receiver", fields: [receiverId], references: [id])
+  sender     User     @relation("Sender", fields: [senderId], references: [id])
+}
+
+model SavedPosts {
+  postID    String
+  userID    String
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  post      Post     @relation(fields: [postID], references: [id])
+  user      User     @relation(fields: [userID], references: [id])
+
+  @@unique([postID, userID])
+}
+
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+enum TwoFactorMethod {
+  EMAIL_LINK
+  EMAIL_CODE
+  PHONE
+  NONE
+}
+
+enum ModlogAction {
+  PERM_BAN_USER
+  TEMP_BAN_USER
+  PIN_POST
+  PIN_COMMENT
+  DELETE_POST
+  DELETE_COMMENT
+  ADD_ADMIN
+  DELETE_ADMIN
+  EDIT_COMMUNITY
+  UNSPECIFIED
+}
+
+enum ModlogSubjectType {
+  USER
+  POST
+  UNSPECIFIED
+  COMMENT
+}
+
+enum ReportReason {
+  HARASSMENT
+  ILLEGAL_CONTENT
+  SPAM
+  SELF_HARM
+}
+
+enum ReportSubject {
+  POST
+  COMMENT
+  USER_PROFILE
 }
