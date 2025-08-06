@@ -1,28 +1,24 @@
 import { createClient } from "redis";
-import { log } from "./utils";
 
-let errorLogged = false;
+const redis = createClient({
+    url: process.env.REDIS_URL ?? "redis://localhost:6379",
+    socket: {
+        connectTimeout: 5000,
+        reconnectStrategy: (retries) => {
+            if (retries > 5) return new Error("Too many retries");
+            return 100 * retries;
+        },
+    }
+});
 
-const redis = await createClient({
-    url: process.env.REDIS_URL ?? "redis://localhost:6379"
-})
-    .on("error", error => {
-        if (!errorLogged) {
-            log({ message: "Redis Client experienced an error: " + error, type: "error" });
-            errorLogged = true;
-        }
-    })
+redis.on("connect", () => console.log("[Redis] Connected to Redis server"));
+redis.on("reconnecting", () => console.log("[Redis] Reconnecting..."));
+redis.on("error", (err) => console.error("[Redis] Error occurred: ", err));
 
 if (!redis.isOpen) {
-    try {
-        await redis.connect();
-    } catch (error) {
-        if (!errorLogged) {
-            log({ message: "Failed to connect to Redis: " + error, type: "error" });
-            errorLogged = true;
-        }
-        throw error;
-    }
+    redis.connect().catch((err) => {
+        console.error("[Redis] Initial connection failed:", err);
+    });
 }
 
 export default redis;

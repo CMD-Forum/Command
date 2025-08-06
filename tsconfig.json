@@ -49,7 +49,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "moduleResolution": "node"
+    "moduleResolution": "nodenext"
   },
   "include": [
     "next-env.d.ts",

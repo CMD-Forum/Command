@@ -74,7 +74,7 @@ export default function PostList({
             const res = await fetch(`${url}?sort=${sort}&page=${page}`, FETCH_OPTIONS);
 
             if (errorCode) setErrorCode(res.status);
-            // if (!res.ok) throw new Error(`Error ${res.status}`);
+            if (!res.ok) throw new Error(`[ERR] HTTP Error ${res.status} occurred while fetching posts`);
 
             const data = await res.json();
             setTotalPosts(data.postCount);
@@ -102,6 +102,8 @@ export default function PostList({
                 return <ListError title={t("Error.CouldNotFetch")} reloadButton reloadFunction={refetch} />
         }
     }
+
+    if (!posts || posts.length === 0) return <ListError title={t("Error.NoPosts")} reloadButton />;
     
     return (
         <div className="flex flex-col w-full">

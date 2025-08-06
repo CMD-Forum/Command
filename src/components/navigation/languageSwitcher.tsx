@@ -1,59 +1,73 @@
 "use client";
 
+import useHasMounted from "@/lib/hooks/data/useHasMounted";
+import clsx from "clsx";
+import { Globe } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import Select, { SelectContent, Option } from "../select/select";
-import { ReactElement, startTransition, useState } from "react";
-import { setUserLocale } from "../../../translation/services/locale";
+import { ReactElement, startTransition } from "react";
 import { Locale } from "../../../translation/i18n/config";
-import { MenuButton } from "../menu/menu";
-import { GB, IE, DE } from "country-flag-icons/react/3x2"
+import { setUserLocale } from "../../../translation/services/locale";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "../ui/select";
+import { Skeleton } from "../ui/skeleton";
 
 export default function LanguageSwitcher({ 
-    style = "Select", 
-    btnClassName, 
-    icon,
+    trigger,
+    forceDark = false
 }: { 
-    style?: "Select" | "List";
-    btnClassName?: string;
-    icon?: ReactElement;
+    trigger?: ReactElement;
+    forceDark?: boolean;
 }) {
+
+    const hasMounted = useHasMounted();
 
     const t = useTranslations("Layout.LanguageSwitcher");
     const LOCALE = useLocale();
 
-    const [selectedValue, setSelectedValue] = useState(LOCALE);
-
     const onChange = (value: string) => {
         const LOCALE = value as Locale;
         startTransition(() => {
-          setUserLocale(LOCALE);
-          setSelectedValue(LOCALE);
+            setUserLocale(LOCALE);
         });
     }
-    
-    if (style === "Select") {
-        return (
-            <Select
-                label={t("Language")} 
-                defaultSelection={t(`Languages.${selectedValue === "en" ? "English" : "German"}`)} 
-                onSelect={onChange}
-                btnClassName={btnClassName}
-                icon={icon}
-            >
-                <SelectContent>
-                    <Option label="English" value="en" icon={<GB />} />
-                    <Option label="Gaeilge" value="ga" icon={<IE />} />
-                    <Option label="Deutsch" value="de" icon={<DE />} />
-                </SelectContent>
-            </Select>
-        );        
-    } else {
-        return (
-            <div className="flex flex-col">
-                <MenuButton onClick={() => onChange("en")} icon={<GB title={t("Languages.English")} />}>English</MenuButton>
-                <MenuButton onClick={() => onChange("ga")} icon={<IE title={t("Languages.Gaeilge")} />}>Gaeilge</MenuButton>
-                <MenuButton onClick={() => onChange("de")} icon={<DE title={t("Languages.German")} />}>Deutsch</MenuButton>
-            </div>
-        );
-    }
+
+    if (!hasMounted) return <Skeleton className="w-29 h-9" />;
+
+    return (
+        <Select
+            defaultValue={LOCALE} 
+            onValueChange={onChange}
+        >
+            <SelectTrigger icon={<Globe />}>
+                {trigger || 
+                    <SelectValue placeholder={t("Language")} />
+                }
+            </SelectTrigger>
+            <SelectContent className={clsx(forceDark ? "dark" : "")}>
+                <SelectGroup>
+                    <SelectLabel>Europe</SelectLabel>
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="de">Deutsch</SelectItem>
+                    <SelectItem value="ga">Gaeilge</SelectItem>
+                    <SelectItem value="fr" disabled>Français</SelectItem>
+                    <SelectItem value="es" disabled>Español</SelectItem>
+                    <SelectItem value="it" disabled>Italiano</SelectItem>
+                    <SelectItem value="pl" disabled>Polski</SelectItem>
+                    <SelectItem value="ru" disabled>русский</SelectItem>
+                </SelectGroup>
+                <SelectGroup>
+                    <SelectLabel>Middle East</SelectLabel>
+                    <SelectItem value="ar" disabled>عربي</SelectItem>
+                </SelectGroup>
+                <SelectGroup>
+                    <SelectLabel>Asia</SelectLabel>
+                    <SelectItem value="ja" disabled>日本語</SelectItem>
+                    <SelectItem value="ko" disabled>한국어</SelectItem>
+                    <SelectItem value="zh-Hans" disabled>简体中文 (Simplified)</SelectItem>
+                    <SelectItem value="zh-Hant" disabled>繁體中文 (Traditional)</SelectItem>
+                    <SelectItem value="hi" disabled>हिंदी</SelectItem>
+                    <SelectItem value="vi" disabled>Tiếng Việt</SelectItem>
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+    );
 }

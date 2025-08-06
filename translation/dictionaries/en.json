@@ -1097,5 +1097,18 @@
     "Password": "Password",
     "PasswordDescription": "To confirm it's you, you'll need to enter your password.",
     "ConfirmPassword": "Confirm Password"
+  },
+  "CriticalErrorPage": {
+    "Title": {
+      "DevelopmentMode": "Unable to connect to required services",
+      "ProductionMode": "This service is currently unavailable"
+    },
+    "Description": {
+      "DevelopmentMode": "Failed to connect to PostgreSQL or Redis. This application requires an active connection to function properly. Please start these services and check their configuration.",
+      "ProductionMode": "Sorry, our services are currently experiencing issues and can't be accessed. Please check back later."
+    },
+    "PageTitle": "Service Unavailable",
+    "RefreshPage": "Refresh Page",
+    "SystemStatus": "System Status"
   }
 }

@@ -28,9 +28,11 @@ function SelectTrigger({
   className,
   size = "default",
   children,
+  icon,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-  size?: "sm" | "default"
+  size?: "sm" | "default",
+  icon?: React.ReactNode;
 }) {
   return (
     <SelectPrimitive.Trigger
@@ -42,6 +44,7 @@ function SelectTrigger({
       )}
       {...props}
     >
+      {icon ? icon : null}
       {children}
       <SelectPrimitive.Icon asChild>
         <ChevronDownIcon className="size-4 opacity-50" />
@@ -172,15 +175,15 @@ function SelectScrollDownButton({
 }
 
 export {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectScrollDownButton,
-    SelectScrollUpButton,
-    SelectSeparator,
-    SelectTrigger,
-    SelectValue
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectScrollDownButton,
+  SelectScrollUpButton,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue
 }
 

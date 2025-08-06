@@ -20,6 +20,8 @@ import { CommunityProvider } from "@/lib/context/community";
 import Providers from "@/lib/query-provider";
 
 import "@/app/globals.css";
+import CriticalErrorPage from "@/lib/db-connection-monitor/critical-error-page";
+import { checkConnections } from "@/lib/db-connection-monitor/db-connection-monitor";
 
 export const INTER = localFont({ src: "../fonts/Inter-VariableFont.ttf" })
 
@@ -69,7 +71,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  	themeColor: "#0F1214",
+  	themeColor: "#09090b",
 };
 
 export default async function RootLayout({
@@ -80,6 +82,9 @@ export default async function RootLayout({
 
 	const LOCALE = await getLocale();
 	const MESSAGES = await getMessages();
+
+	const { ok } = await checkConnections();
+	if (!ok) return <CriticalErrorPage />
 
 	const COOKIE_STORE = await cookies()
 	const DEFAULT_OPEN = COOKIE_STORE.get("sidebar_state")?.value === "true"
