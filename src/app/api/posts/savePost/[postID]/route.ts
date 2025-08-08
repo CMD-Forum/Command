@@ -1,39 +1,33 @@
 import { NextResponse } from "next/server";
 
-import { lucia } from "@/lib/auth/auth";
+import { ContextWithAuth, withAuth } from "@/lib/api/with-auth";
 import { db } from "@/lib/db";
 import redis from "@/lib/redis";
 import { log } from "@/lib/utils";
 
-export async function POST(req: Request, { params }: { params: Promise<{ postID: string }> }) {
+async function authPOST(req: Request, ctx: ContextWithAuth) {
     try {
-        const { postID: POST_ID } = await params;
-        const AUTH_HEADER = req.headers.get("Authorization");
-        const SESSION_ID = lucia.readBearerToken(AUTH_HEADER ?? "");
+        const { postID: POST_ID } = await ctx.params;
+        if (!ctx.userId) { return NextResponse.json({ message: "Authentication is required." }, { status: 401 })};
 
-        if (!SESSION_ID) return new NextResponse(null, { status: 401 });
-
-        const { user } = await lucia.validateSession(SESSION_ID);
-        if (!user?.id) return new NextResponse(null, { status: 401 });
-
-        const POST_ALREADY_SAVED_REDIS = await redis.get(`users:${user.id}:saved-posts:${POST_ID}`);
+        const POST_ALREADY_SAVED_REDIS = await redis.get(`users:${ctx.userId}:saved-posts:${POST_ID}`);
         if (POST_ALREADY_SAVED_REDIS === "true") return NextResponse.json({ message: "Post is already saved." }, { status: 400 });
 
         const POST_ALREADY_SAVED = await db.savedPosts.findUnique({
-            where: { postID_userID: { userID: user.id, postID: POST_ID } }
+            where: { postID_userID: { userID: ctx.userId, postID: POST_ID } }
         });
         if (POST_ALREADY_SAVED) {
-            await redis.set(`users:${user.id}:saved-posts:${POST_ID}`, "true");
+            await redis.set(`users:${ctx.userId}:saved-posts:${POST_ID}`, "true");
             return NextResponse.json({ message: "Post is already saved." }, { status: 400 });
         }
 
         await db.savedPosts.create({
             data: {
-                userID: user.id,
+                userID: ctx.userId,
                 postID: POST_ID
             }
         });
-        await redis.set(`users:${user.id}:saved-posts:${POST_ID}`, "true");
+        await redis.set(`users:${ctx.userId}:saved-posts:${POST_ID}`, "true");
 
         return NextResponse.json({ message: "Successfully saved post." }, { status: 201 });
     } catch (error) {
@@ -41,3 +35,5 @@ export async function POST(req: Request, { params }: { params: Promise<{ postID:
         return NextResponse.json({ message: "Error occurred while saving post, please check your request for errors." }, { status: 500 });
     }
 }
+
+export const POST = withAuth(authPOST, true);

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { log } from "@/lib/utils";
 import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
@@ -15,7 +16,7 @@ export default function Error({
     const t = useTranslations("Layout.GenericError");
 
     useEffect(() => {
-        console.error(error)
+        log({ type: "error", message: error.message })
     }, [error])
 
     return (

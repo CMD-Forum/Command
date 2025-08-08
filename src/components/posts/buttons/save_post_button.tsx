@@ -1,28 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
 import { useTranslations } from "next-intl";
 
+import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useQuery } from "@tanstack/react-query";
+// import { useQuery } from "@tanstack/react-query";
 import { Bookmark } from "lucide-react";
 
 export function SavePostButton({ 
     userID,
     postID,
     menuTrigger,
+    saved, 
+    setSaved
 }: {
     userID: string;
     postID: string;
     menuTrigger?: boolean;
+    saved: boolean;
+    setSaved: Dispatch<SetStateAction<boolean>>;
 }) {
 
     const t = useTranslations("Components.Post.SaveButton");
-
-    const [saved, setSaved] = useState<boolean>(false);
 
     // const { data: SESSION } = authClient.useSession();
     const isMobile = useIsMobile();
@@ -39,6 +42,7 @@ export function SavePostButton({
                 },
             })
             .then((res) => {
+                console.log("SavePost response status:", res.status);
                 if (res.status !== 201) setSaved(false);
                 return res.json();
             })
@@ -52,47 +56,26 @@ export function SavePostButton({
                 },
             })
             .then((res) => {
+                console.log("SavePost response status:", res.status);
                 if (res.status !== 200) setSaved(true);
                 return res.json();
             })  
         }
     }
 
-    const { isLoading } = useQuery({
-        queryKey: ['save_post', /*token,*/ postID, userID],
-        queryFn: async () => {
-            const res = await fetch(`/api/posts/checkSaved/${postID}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    // "Authorization": `Bearer ${token}`,
-                },
-            });
-
-            if (!res.ok) throw new Error(`Error ${res.status}`);
-            if (res.status === 401) setSaved(false);
-
-            const data = await res.json();
-            setSaved(data === true);
-
-            return data;
-        },
-        retry: 1
-    });
-
-    if (isLoading && menuTrigger === false) return <div className="bg-border animate-pulse w-[83px] h-[36px] rounded-sm" />
+    // if (isLoading && menuTrigger === false) return <div className="bg-border animate-pulse w-[83px] h-[36px] rounded-sm" />
    
     if (menuTrigger === true) {
         return (
-            <Toggle
-                variant="outline"
+            <Button 
                 onClick={() => SavePost()} 
-                aria-label="Save Post" 
-                className="!border-none !w-full !justify-start"
+                variant="ghost" 
+                className="!justify-start !font-medium"
+                aria-label={t("SavePost")}
             >
-                <Bookmark stroke="var(--muted-foreground)" fill={saved ? "var(--muted-foreground)" : "transparent"} />
+                <Bookmark stroke="white" fill={saved ? "white" : "transparent"} />
                 { saved ? t("Saved") : t("Save") }
-            </Toggle>
+            </Button>
         );
     } else {
         return (

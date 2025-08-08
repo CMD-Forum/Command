@@ -20,9 +20,9 @@ export interface CommunitySidebarDataAPIResponse {
     error: string;
 }
 
-async function authGET(req: Request, context: ContextWithAuth) {
+async function authGET(req: Request, ctx: ContextWithAuth) {
     try {
-        const { communityID } = await context.params;
+        const { communityID } = await ctx.params;
 
         if (!communityID) return NextResponse.json({ error: "communityID is required." }, { status: 400 });
 
@@ -57,8 +57,8 @@ async function authGET(req: Request, context: ContextWithAuth) {
         if (!COMMUNITY) return NextResponse.json({ error: "Community not found."}, { status: 404 });
 
         if (COMMUNITY.public === false) {
-            if (context.session?.id) {
-                const userId = context.userId;
+            if (ctx.session?.id) {
+                const userId = ctx.userId;
                 const USER_IS_MODERATOR = isAll ? false : await db.communityModerator.findFirst({ where: { communityID: COMMUNITY.id.toString(), userID: userId }});
 
                 if (userId && USER_IS_MODERATOR) {

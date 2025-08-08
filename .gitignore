@@ -42,3 +42,7 @@ certificates
 # prisma
 
 /generated/prisma
+
+# misc
+
+/public/images/uploaded

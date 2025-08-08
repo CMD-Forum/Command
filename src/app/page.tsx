@@ -1,9 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
-import { toast } from "sonner";
+import { Suspense } from "react";
 
 import CommunitySidebar from "@/components/community/communitySidebar";
 import { CommunityHeading } from "@/components/navigation/pageHeading";
@@ -11,17 +8,7 @@ import PostList from "@/components/posts/post_list";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useFetchAndSetCommunity } from "@/lib/context/community";
 
-export const experimental_ppr = true;
-
 export default function Home() {
-
-    const t = useTranslations("/");
-    const searchParams = useSearchParams();
-
-    useEffect(() => {
-        if (searchParams.get("signupsuccess") === "true") toast.success(t("SignupSuccess.Title"), { description: t("SignupSuccess.Description") });
-        if (searchParams.get("loginsuccess") === "true") toast.success(t("LoginSuccess.Title"));
-    }, [searchParams, t]);
     
     useFetchAndSetCommunity({ fetchBy: "Name", identifier: "all" });
 
@@ -34,7 +21,7 @@ export default function Home() {
             <div className="flex flex-row gap-6 mt-4 mb-4">
                 <Suspense fallback={<div className="flex flex-col gap-4 w-full">{LOADING_SKELETONS}</div>}>
                     <PostList
-                        url="/api/posts/getAll/"
+                        url="/api/posts/getAll"
                         method="GET"
                     />                    
                 </Suspense>

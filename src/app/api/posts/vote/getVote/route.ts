@@ -4,14 +4,14 @@ import { ContextWithAuth, withAuth } from "@/lib/api/with-auth";
 import { checkIfVotedOnPost } from "@/lib/data";
 import { log } from "@/lib/utils";
 
-export async function authPOST( req: Request, context: ContextWithAuth ) {
+export async function authPOST( req: Request, ctx: ContextWithAuth ) {
     try {
-        if (!context.userId) { return new NextResponse(null, { status: 401 })}
+        if (!ctx.userId) { return new NextResponse(null, { status: 401 })}
 
         const { postID: POST_ID } = await req.json();
         if (!POST_ID) { return NextResponse.json({ message: "postID is required." }, { status: 400 })}
 
-        const voted = await checkIfVotedOnPost({ userID: context.userId, postID: POST_ID });
+        const voted = await checkIfVotedOnPost({ userID: ctx.userId, postID: POST_ID });
               
         return NextResponse.json(voted, { status: 200 })
     } catch (error) {

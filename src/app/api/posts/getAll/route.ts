@@ -18,7 +18,6 @@ export async function GET(req: NextRequest) {
                     id: true,
                     username: true,
                     createdAt: true,
-                    updatedAt: true,
                     image: true,
                     description: true,
                 }
@@ -28,8 +27,8 @@ export async function GET(req: NextRequest) {
                     id: true,
                     name: true,
                     image: true,
-                    public: true,
                     description: true,
+                    createdAt: true,
                 },
             },
         }

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -5,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Copy, Share } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
 export default function ShareButton({ 
     title, 
@@ -17,8 +20,13 @@ export default function ShareButton({
 }) {
 
     const t = useTranslations("Components.Post.Share");
+    const [canShare, setCanShare] = useState<boolean>(false);
 
-    if (navigator.share) {
+    useEffect(() => {
+        if (typeof navigator !== "undefined" && typeof navigator.canShare === "function") setCanShare(true);
+    }, []);
+
+    if (canShare) {
         return (
             <Button variant="outline" onClick={async () => await navigator.share({ title: title, text: text, url: url })}>
                 <Share />

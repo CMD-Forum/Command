@@ -32,6 +32,16 @@ export default function useFetch<T>({
 
     const SERIALIZED_BODY_PARAMS = useMemo(() => JSON.stringify(bodyParams), [bodyParams]);
 
+    const stableBody = useMemo(
+        () => JSON.stringify(bodyParams ?? {}),
+        [JSON.stringify(bodyParams ?? {})]
+    );
+
+    const stableHeaders = useMemo(
+        () => JSON.stringify(headers ?? {}),
+        [JSON.stringify(headers ?? {})]
+    );
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -40,12 +50,13 @@ export default function useFetch<T>({
                     headers: {
                         "Content-Type": "application/json",
                         // "Authorization": `Bearer ${token}`,
-                        ...headers
+                        ...JSON.parse(stableHeaders)
                     },
-                    body: SERIALIZED_BODY_PARAMS
+                    body: stableBody,
                 });
                 if (!RES.ok) setErrorCode(RES.status);
                 setStatusCode(RES.status);
+
                 const RESULT: T = await RES.json();
                 setData(RESULT);
             } catch (error) {
@@ -57,7 +68,7 @@ export default function useFetch<T>({
         };
     
         fetchData();
-    }, [url, /*token,*/ SERIALIZED_BODY_PARAMS, headers, method]);
+    }, [url, method, stableBody, stableHeaders]);
     
     return { data, loading, responseMessage, errorCode, statusCode };
 }

@@ -46,14 +46,14 @@ export const communityCreateSchema = z.object({
         })
 })
 
-async function authPOST(req: Request, context: ContextWithAuth) {
+async function authPOST(req: Request, ctx: ContextWithAuth) {
     try {
         const body = await req.json();
         if (!body) return NextResponse.json({ response: null, error: "A request body with the required information was not provided." }, { status: 400 });
         
         const { name, description, sidebar_content, image_url } = communityCreateSchema.parse(body);
 
-        if (!context.userId) return NextResponse.json({ response: null, error: "UserID was not found. Please retry your request." }, { status: 400 });
+        if (!ctx.userId) return NextResponse.json({ response: null, error: "UserID was not found. Please retry your request." }, { status: 400 });
 
         const community = await db.community.create({
             data: {
@@ -67,14 +67,14 @@ async function authPOST(req: Request, context: ContextWithAuth) {
         await db.communityModerator.create({
             data: {
                 communityID: community.id,
-                userID: context.userId
+                userID: ctx.userId
             }
         })
 
         await db.communityMembership.create({
             data: {
                 communityId: community.id,
-                userId: context.userId
+                userId: ctx.userId
             }
         })
 

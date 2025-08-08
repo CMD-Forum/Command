@@ -6,7 +6,7 @@ import {
 import { domAnimation, LazyMotion } from "motion/react";
 import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages, /*getTranslations*/ } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import localFont from "next/font/local";
 import { cookies } from "next/headers";
 import { StrictMode } from "react";
@@ -81,7 +81,6 @@ export default async function RootLayout({
 }>) {
 
 	const LOCALE = await getLocale();
-	const MESSAGES = await getMessages();
 
 	const { ok } = await checkConnections();
 	if (!ok) return <CriticalErrorPage />
@@ -92,7 +91,7 @@ export default async function RootLayout({
 	// const t = await getTranslations("Layout");
 
 	return (
-		<NextIntlClientProvider messages={MESSAGES}>
+		<NextIntlClientProvider>
 			<Providers>
 				<StrictMode>
 					<CommunityProvider>
@@ -100,9 +99,7 @@ export default async function RootLayout({
 								<html lang={LOCALE} suppressHydrationWarning>
 									<link rel="manifest" href="/manifest.json" />
 									<link rel="preload" href="TextPostFallback.svg" as="image" />
-									<body
-										className={`${INTER.className} antialiased theme-zinc`}
-									>
+									<body className={`${INTER.className} antialiased`}>
 										<>
 											{/*<div className="w-screen h-full absolute flex items-center justify-center bg-background z-[999999999]">
 												<h1>{t("Error.JSDisabled")}</h1>
@@ -113,7 +110,7 @@ export default async function RootLayout({
 												enableSystem
 												disableTransitionOnChange
 											>
-												<div className="[--header-height:calc(theme(spacing.14))]">
+												<div className="[--header-height:calc(theme(spacing.14))]" vaul-drawer-wrapper="">
 													<SidebarProvider defaultOpen={DEFAULT_OPEN}>
 														<AppSidebar />
 														<SidebarInset>
@@ -124,7 +121,7 @@ export default async function RootLayout({
 																	<Breadcrumbs />
 																</div>
 															</header>
-															<div className="px-50">
+															<div className="px-4 lg:!px-50">
 																{children}	
 															</div>
 															<Toaster richColors closeButton position="top-center" />

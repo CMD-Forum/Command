@@ -8,6 +8,7 @@ export async function POST( req: Request ) {
         if (!req.body) return NextResponse.json({ message: "Request body is required." }, { status: 400 });
 
         const { userID, communityID } = await req.json();
+        console.log(userID + " " + communityID)
         if (!communityID) return NextResponse.json({ message: "CommunityID is required." }, { status: 400 });
 
         const moderator = await db.communityModerator.findUnique({ where: { userID_communityID: { userID: userID, communityID: communityID } }});

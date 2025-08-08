@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { CREATE_COMMUNITY_SCHEMA } from "@/lib/schemas";
 import { log } from "@/lib/utils";
 
-async function authPOST(req: Request, context: ContextWithAuth ) {
+async function authPOST(req: Request, ctx: ContextWithAuth ) {
     try {
         const BODY = await req.json();
         const { name, short_description, image_url } = CREATE_COMMUNITY_SCHEMA.parse(BODY);
@@ -24,7 +24,7 @@ async function authPOST(req: Request, context: ContextWithAuth ) {
 
         await db.communityModerator.create({ 
             data: { 
-                userID: context.userId, 
+                userID: ctx.userId, 
                 communityID: newCommunity.id 
             } 
         });

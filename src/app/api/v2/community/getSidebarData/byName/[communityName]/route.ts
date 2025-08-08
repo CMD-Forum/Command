@@ -20,9 +20,9 @@ export interface CommunitySidebarDataAPIResponse {
     error: string;
 }
 
-async function authGET(req: Request, context: ContextWithAuth) {
+async function authGET(req: Request, ctx: ContextWithAuth) {
     try {
-        const { communityName } = await context.params;
+        const { communityName } = await ctx.params;
 
         if (!communityName) return NextResponse.json({ error: "communityName is required." }, { status: 400 });
 
@@ -61,10 +61,10 @@ async function authGET(req: Request, context: ContextWithAuth) {
         if (!COMMUNITY) return NextResponse.json({ error: "Community not found."}, { status: 404 });
 
         if (COMMUNITY.public === false) {
-            if (context.session?.id || context.apiKey?.valid) {
-                const USER_IS_MODERATOR = isAll ? false : await db.communityModerator.findFirst({ where: { communityID: COMMUNITY.id.toString(), userID: context.userId || context.apiKey?.value?.userId } });
+            if (ctx.session?.id || ctx.apiKey?.valid) {
+                const USER_IS_MODERATOR = isAll ? false : await db.communityModerator.findFirst({ where: { communityID: COMMUNITY.id.toString(), userID: ctx.userId || ctx.apiKey?.value?.userId } });
 
-                if ((context.session?.userId || context.apiKey?.value?.userId) && USER_IS_MODERATOR) {
+                if ((ctx.session?.userId || ctx.apiKey?.value?.userId) && USER_IS_MODERATOR) {
                     const STRUCUTRED_COMMUNITY = {
                         community: COMMUNITY,
                         information: {

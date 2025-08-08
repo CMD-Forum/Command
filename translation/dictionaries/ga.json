@@ -1,806 +1,805 @@
 {
-    "Layout": {
-      "Topbar": {
-        "Links": {
-          "Home": "Baile",
-          "Community": "Pobal",
-          "Explore": "",
-          "More": "Níos Mó",
-          "SavedPosts": "Postálacha Slánaithe",
-          "JoinedCommunities": "Pobail a bhfuil tú ina bhall díobh"
-        },
-        "Search": {
-          "SearchCommand": "Cuardach Command",
-          "Escape": "Brúigh Esc chun an bosca dialóige a fhágáil.",
-          "StartSearching": "Tosaigh ag cuardach do leathanaigh, socruithe agus níos mó.",
-          "NoResults": "Níl faigheadh torthaí.",
-          "Communities": "Pobail",
-          "Users": "Úsáideoirí",
-          "SearchFor": "Cuardach do",
-          "SearchTypes": {
-            "Type": "Sórt",
-            "Posts": "Postálacha",
-            "Communities": "Pobail",
-            "Users": "Úsáideoirí"
-          },
-          "SearchPosts": "Cuardach Postálacha",
-          "SearchCommunities": "Cuardach Pobail",
-          "SearchUsers": "Cuardach Úsáideoirí"
-        },
-        "EndButtons": {
-          "Languages": "Teangacha",
-          "Account": "Cuntas"
-        },
-        "NotificationMenu": {
-          "Notifications": "Fógraí",
-          "Tabs": {
-            "DirectMessages": "Teachtaireacht Díreach",
-            "Replies": "Freagraí",
-            "Misc": "Difriúil"
-          }
-        },
-        "AccountMenu": {
-          "LoggedIn": {
-            "YourProfile": "Do Chuntas",
-            "Settings": "Socruithe",
-            "Theme": "Téama",
-            "Logout": "Logáil amach"
-          },
-          "LoggedOut": {
-            "Login": "Logáil isteach",
-            "Signup": "Cláraigh"
-          },
-          "Bottombar": {
-            "Donate": "Tabhair",
-            "DonationMessage": "Donating isn't currently possible at this moment. If you wish to help and can code, please visit the GitHub repository.",
-            "ButtonAccept": "Ceart go leor"
-          }
-        }
-      },
-      "Sidebar": {
+  "Layout": {
+    "Topbar": {
+      "Links": {
         "Home": "Baile",
-        "Communities": "Pobail",
+        "Community": "Pobal",
+        "Explore": "",
+        "More": "Níos Mó",
         "SavedPosts": "Postálacha Slánaithe",
-        "JoinedCommunities": "Pobail a bhfuil tú ina bhall díobh",
-        "NoCommunitiesJoined": "Níl tú bhall de aon phobail.",
-        "JoinedCommunitiesError": "Níorbh fheidír linn an pobail ar bhall tú de a fháil.",
-        "AccountMenu": {
-          "LoggedIn": {
-            "YourProfile": "Do Chuntas",
-            "Settings": "Socruithe",
-            "Theme": "Téama",
-            "Logout": "Logáil amach"
-          },
-          "LoggedOut": {
-            "Login": "Logáil isteach",
-            "Signup": "Cláraigh",
-            "AccountTitle": "Níl tú logáil isteach.",
-            "AccountDescription": "Logáil isteach chun postáil, nóta tráchta a chur le, agus votáil."
-          },
-          "Bottombar": {
-            "Donate": "Tabhair",
-            "DonationMessage": "Donating isn't currently possible at this moment. If you wish to help and can code, please visit the GitHub repository.",
-            "ButtonAccept": "Ceart go leor"
-          }
+        "JoinedCommunities": "Pobail a bhfuil tú ina bhall díobh"
+      },
+      "Search": {
+        "SearchCommand": "Cuardach Command",
+        "Escape": "Brúigh Esc chun an bosca dialóige a fhágáil.",
+        "StartSearching": "Tosaigh ag cuardach do leathanaigh, socruithe agus níos mó.",
+        "NoResults": "Níl faigheadh torthaí.",
+        "Communities": "Pobail",
+        "Users": "Úsáideoirí",
+        "SearchFor": "Cuardach do",
+        "SearchTypes": {
+          "Type": "Sórt",
+          "Posts": "Postálacha",
+          "Communities": "Pobail",
+          "Users": "Úsáideoirí"
+        },
+        "SearchPosts": "Cuardach Postálacha",
+        "SearchCommunities": "Cuardach Pobail",
+        "SearchUsers": "Cuardach Úsáideoirí"
+      },
+      "EndButtons": {
+        "Languages": "Teangacha",
+        "Account": "Cuntas"
+      },
+      "NotificationMenu": {
+        "Notifications": "Fógraí",
+        "Tabs": {
+          "DirectMessages": "Teachtaireacht Díreach",
+          "Replies": "Freagraí",
+          "Misc": "Difriúil"
         }
       },
-      "UserSidebar": {
-        "Accordion": {
-          "JoinedCommunities": "Pobail a bhfuil tú ina bhall díobh",
-          "ModeratedCommunities": "Pobail a bhfuil tú ina modhnóir díobh",
-          "SavedPosts": {
-            "SavedPosts": "Postálacha Slánaithe",
-            "ViewAll": "Féach ag gach rud"
-          },
-          "Following": "Ag leanúint"
-        },
-        "Buttons": {
-          "Profile": "Cuntas",
-          "ModerationLogs": "Loganna Modhnaithe",
-          "Contact": "Déan teagmháil"
+      "AccountMenu": {
+        "LoggedIn": {
+          "YourProfile": "Do Chuntas",
+          "Settings": "Socruithe",
+          "Theme": "Téama",
+          "Logout": "Logáil amach"
         },
         "LoggedOut": {
-          "Title": "Logáil isteach ar Command",
-          "Subtitle": "Beidh tú in ann a postáil, nóta tráchta a chur le, agus votáil.",
           "Login": "Logáil isteach",
           "Signup": "Cláraigh"
-        }
-      },
-      "CommunitySidebar": {
-        "Accordion": {
-          "About": "Faoi",
-          "Rules": "Rialacha",
-          "Moderators": "Modhnóirí",
-          "RelatedCommunities": "Pobail Ceangailte"
         },
-        "Buttons": {
-          "Wiki": "Wiki",
-          "ModerationLogs": "Loganna Modhnaithe",
-          "Contact": "Déan teagmháil"
-        },
-        "FetchFailed": "Níorbh fheidír linn an pobail seo a fháil.",
-        "FetchFailedDescription": "Níl bheith ann an phobal nó níl tú ceadaithe a féach é.",
-        "NoRules": "Níl aon rialacha ag phobal seo. Cuimhnigh, tá rialacha láithreán gréasáin freisin."
-      },
-      "LanguageSwitcher": {
-        "Language": "Teangacha",
-        "Languages": {
-          "English": "Béarla",
-          "German": "Gearmánach",
-          "Gaeilge": "Gaeilge"
+        "Bottombar": {
+          "Donate": "Tabhair",
+          "DonationMessage": "Donating isn't currently possible at this moment. If you wish to help and can code, please visit the GitHub repository.",
+          "ButtonAccept": "Ceart go leor"
         }
       }
     },
-    "Auth": {
-      "Login": {
-        "Login": "Logáil isteach ar Command",
-        "LoggingIn": "Ag logáil isteach",
-        "LoginSubtitle": "Déan postálacha, nóta tráchta a chur le, agus votáil le chuntas.",
-        "Or": "Nó",
-        "Username": "Ainm Úsáideora",
-        "Password": "Pasfhocal",
-        "LoginWithGitHub": {
-          "Title": "Logáil isteach le GitHub",
-          "Subtitle": "Seo a dhéanfaidh do chuid eolas GitHub le feiceáil ag aon daoine eile. Beidh ort do dheimhniú a dhéanamh.",
-          "CloseButton": "Cuir ar ceal"
+    "Sidebar": {
+      "Home": "Baile",
+      "Communities": "Pobail",
+      "SavedPosts": "Postálacha Slánaithe",
+      "JoinedCommunities": "Pobail a bhfuil tú ina bhall díobh",
+      "NoCommunitiesJoined": "Níl tú bhall de aon phobail.",
+      "JoinedCommunitiesError": "Níorbh fheidír linn an pobail ar bhall tú de a fháil.",
+      "AccountMenu": {
+        "LoggedIn": {
+          "YourProfile": "Do Chuntas",
+          "Settings": "Socruithe",
+          "Theme": "Téama",
+          "Logout": "Logáil amach"
         },
-        "Signup": "Cláraigh",
-        "ForgotPassword": {
-          "Title": "Ní cuimhin liom mo pasfhocal.",
-          "Subtitle": "Sorry, this feature is unimplemented. Check back later.",
-          "CloseButton": "Cuir ar ceal"
-        },
-        "Error": {
-          "Generic": {
-            "Title": "Teip ar an logáil isteach.",
-            "Description": "Iarracht a dhéanamh arís le do thoil."
-          },
-          "SubmitFailed": {
-            "Title": "Teip ar an logáil isteach.",
-            "Description": "Teip ar an foirm a cuir isteach, iarracht a dhéanamh arís le do thoil."
-          },
-          "IncorrectCredentials": {
-            "Title": "Teip ar an logáil isteach.",
-            "Description": "Tá an ainm úsáideora nó pasfhocal mícheart."
-          },
-          "TimedOut": {
-            "Title": "Teip ar an logáil isteach.",
-            "Description": "Chuaigh an logáil isteach in éag."
-          },
-          "DatabaseError": {
-            "Title": "Teip ar an logáil isteach.",
-            "Description": "Tá fadhbanna ag an bunachar sonraí, iarracht a dhéanamh arís níos déanaí le do thoil."
-          },
-          "Form": {
-            "UsernameTooShort": "Ní mór an ainm úsáideora a beidh ar a laghad dhá litreacha.",
-            "UsernameTooLong": "Ní mór an ainm úsáideora a beidh níos lú ná fiche litreacha.",
-            "PasswordTooShort": "Ní mór an pasfhocal a beidh ar a laghad dhá litreacha.",
-            "PasswordTooLong": "Tá an pasfhocal ró-fada."
-          }
-        },
-        "Options": {
+        "LoggedOut": {
+          "Login": "Logáil isteach",
           "Signup": "Cláraigh",
-          "ForgotPassword": "Ní cuimhin liom mo pasfhocal."
+          "AccountTitle": "Níl tú logáil isteach.",
+          "AccountDescription": "Logáil isteach chun postáil, nóta tráchta a chur le, agus votáil."
+        },
+        "Bottombar": {
+          "Donate": "Tabhair",
+          "DonationMessage": "Donating isn't currently possible at this moment. If you wish to help and can code, please visit the GitHub repository.",
+          "ButtonAccept": "Ceart go leor"
+        }
+      }
+    },
+    "UserSidebar": {
+      "Accordion": {
+        "JoinedCommunities": "Pobail a bhfuil tú ina bhall díobh",
+        "ModeratedCommunities": "Pobail a bhfuil tú ina modhnóir díobh",
+        "SavedPosts": {
+          "SavedPosts": "Postálacha Slánaithe",
+          "ViewAll": "Féach ag gach rud"
+        },
+        "Following": "Ag leanúint"
+      },
+      "Buttons": {
+        "Profile": "Cuntas",
+        "ModerationLogs": "Loganna Modhnaithe",
+        "Contact": "Déan teagmháil"
+      },
+      "LoggedOut": {
+        "Title": "Logáil isteach ar Command",
+        "Subtitle": "Beidh tú in ann a postáil, nóta tráchta a chur le, agus votáil.",
+        "Login": "Logáil isteach",
+        "Signup": "Cláraigh"
+      }
+    },
+    "CommunitySidebar": {
+      "Accordion": {
+        "About": "Faoi",
+        "Rules": "Rialacha",
+        "Moderators": "Modhnóirí",
+        "RelatedCommunities": "Pobail Ceangailte"
+      },
+      "Buttons": {
+        "Wiki": "Wiki",
+        "ModerationLogs": "Loganna Modhnaithe",
+        "Contact": "Déan teagmháil"
+      },
+      "FetchFailed": "Níorbh fheidír linn an pobail seo a fháil.",
+      "FetchFailedDescription": "Níl bheith ann an phobal nó níl tú ceadaithe a féach é.",
+      "NoRules": "Níl aon rialacha ag phobal seo. Cuimhnigh, tá rialacha láithreán gréasáin freisin."
+    },
+    "LanguageSwitcher": {
+      "Language": "Teangacha",
+      "Languages": {
+        "English": "Béarla",
+        "German": "Gearmánach",
+        "Gaeilge": "Gaeilge"
+      }
+    }
+  },
+  "Auth": {
+    "Login": {
+      "Login": "Logáil isteach ar Command",
+      "LoggingIn": "Ag logáil isteach",
+      "LoginSubtitle": "Déan postálacha, nóta tráchta a chur le, agus votáil le chuntas.",
+      "Or": "Nó",
+      "Username": "Ainm Úsáideora",
+      "Password": "Pasfhocal",
+      "LoginWithGitHub": {
+        "Title": "Logáil isteach le GitHub",
+        "Subtitle": "Seo a dhéanfaidh do chuid eolas GitHub le feiceáil ag aon daoine eile. Beidh ort do dheimhniú a dhéanamh.",
+        "CloseButton": "Cuir ar ceal"
+      },
+      "Signup": "Cláraigh",
+      "ForgotPassword": {
+        "Title": "Ní cuimhin liom mo pasfhocal.",
+        "Subtitle": "Sorry, this feature is unimplemented. Check back later.",
+        "CloseButton": "Cuir ar ceal"
+      },
+      "Error": {
+        "Generic": {
+          "Title": "Teip ar an logáil isteach.",
+          "Description": "Iarracht a dhéanamh arís le do thoil."
+        },
+        "SubmitFailed": {
+          "Title": "Teip ar an logáil isteach.",
+          "Description": "Teip ar an foirm a cuir isteach, iarracht a dhéanamh arís le do thoil."
+        },
+        "IncorrectCredentials": {
+          "Title": "Teip ar an logáil isteach.",
+          "Description": "Tá an ainm úsáideora nó pasfhocal mícheart."
+        },
+        "TimedOut": {
+          "Title": "Teip ar an logáil isteach.",
+          "Description": "Chuaigh an logáil isteach in éag."
+        },
+        "DatabaseError": {
+          "Title": "Teip ar an logáil isteach.",
+          "Description": "Tá fadhbanna ag an bunachar sonraí, iarracht a dhéanamh arís níos déanaí le do thoil."
+        },
+        "Form": {
+          "UsernameTooShort": "Ní mór an ainm úsáideora a beidh ar a laghad dhá litreacha.",
+          "UsernameTooLong": "Ní mór an ainm úsáideora a beidh níos lú ná fiche litreacha.",
+          "PasswordTooShort": "Ní mór an pasfhocal a beidh ar a laghad dhá litreacha.",
+          "PasswordTooLong": "Tá an pasfhocal ró-fada."
         }
       },
-      "Signup": {
+      "Options": {
         "Signup": "Cláraigh",
-        "SigningUp": "Ag clárú",
-        "SignupSubtitle": "Submit posts, comment and vote with an account.",
-        "Username": "Username",
-        "Email": "Email",
-        "Password": "Password",
-        "LoginWithGitHub": {
-          "Title": "Login with GitHub",
-          "Subtitle": "This will make your GitHub profile details visible to anyone on this site. You may be asked for confirmation.",
-          "CloseButton": "Cancel"
+        "ForgotPassword": "Ní cuimhin liom mo pasfhocal."
+      }
+    },
+    "Signup": {
+      "Signup": "Cláraigh",
+      "SigningUp": "Ag clárú",
+      "SignupSubtitle": "Submit posts, comment and vote with an account.",
+      "Username": "Username",
+      "Email": "Email",
+      "Password": "Password",
+      "LoginWithGitHub": {
+        "Title": "Login with GitHub",
+        "Subtitle": "This will make your GitHub profile details visible to anyone on this site. You may be asked for confirmation.",
+        "CloseButton": "Cancel"
+      },
+      "Login": "Login",
+      "ForgotPassword": {
+        "Title": "Ní cuimhin liom mo pasfhocal.",
+        "Subtitle": "Gabh mo leithsceal, tá an . Check back later.",
+        "CloseButton": "Cuir ar ceal"
+      },
+      "Error": {
+        "Generic": {
+          "Title": "Signup Failed",
+          "Description": "Please try again later."
         },
-        "Login": "Login",
-        "ForgotPassword": {
-          "Title": "Ní cuimhin liom mo pasfhocal.",
-          "Subtitle": "Gabh mo leithsceal, tá an . Check back later.",
-          "CloseButton": "Cuir ar ceal"
+        "SubmitFailed": {
+          "Title": "Signup Failed",
+          "Description": "The form failed to submit, please try again."
         },
+        "UsernameValidationFailed": {
+          "Title": "Signup Failed",
+          "Description": "Username must be within 2 to 30 characters and not have special characters."
+        },
+        "PasswordValidationFailed": {
+          "Title": "Signup Failed",
+          "Description": "Password must be at minimum 2 characters."
+        },
+        "EmailValidationFailed": {
+          "Title": "Signup Failed",
+          "Description": "Email must be a valid address."
+        },
+        "EmailOrUsernameTaken": {
+          "Title": "Signup Failed",
+          "Description": "Email or username is taken."
+        },
+        "TimedOut": {
+          "Title": "Signup Failed",
+          "Description": "The login timed out."
+        },
+        "DatabaseError": {
+          "Title": "Signup Failed",
+          "Description": "The database is currently experiencing issues, please try again later."
+        },
+        "Form": {
+          "UsernameTooShort": "Username must be at least 2 characters.",
+          "UsernameTooLong": "Username must be less than 20 characters.",
+          "PasswordTooShort": "Password must be at least 2 characters.",
+          "PasswordTooLong": "Password is too long.",
+          "InvalidEmail": "Email must be valid."
+        }
+      }
+    }
+  },
+  "Components": {
+    "Post": {
+      "Post": "Post",
+      "Vote": {
+        "Vote": "Vote",
+        "Upvote": "Upvote (currently {upvotes, number})",
+        "Downvote": "Downvote (currently {downvotes, number})",
         "Error": {
+          "FailedUpvote": {
+            "Title": "Failed to upvote.",
+            "Description": "Try again later."
+          },
+          "FailedRemoveUpvote": {
+            "Title": "Failed to remove upvote",
+            "Description": "Try again later."
+          },
+          "FailedDownvote": {
+            "Title": "Failed to downvote.",
+            "Description": "Try again later."
+          },
+          "FailedRemoveDownvote": {
+            "Title": "Failed to remove downvote",
+            "Description": "Try again later."
+          },
+          "Login": {
+            "Title": "You need to be logged in to vote.",
+            "LoginButton": "Login"
+          }
+        },
+        "Loading": "Loading"
+      },
+      "Comments": "Comments",
+      "Share": {
+        "Share": "Share",
+        "UnsupportedTitle": "Sharing is unsupported",
+        "UnsupportedSubtitle": "Your browser does not support web sharing.",
+        "UnsupportedButton": "Okay"
+      },
+      "ReportButton": {
+        "Report": "Report",
+        "Subtitle": "Please fill in the below information to submit a report.",
+        "SelectReason": "Select Reason",
+        "Reasons": {
+          "Harassment": "Harassment",
+          "IllegalContent": "Illegal Content",
+          "Spam": "Spam",
+          "SelfHarm": "Self Harm"
+        },
+        "OtherInformation": "Information",
+        "ButtonCancel": "Cancel",
+        "ButtonReport": "Report",
+        "Error": {
+          "InformationNotFilledIn": "Please provide information about the report.",
+          "SelectReason": "Please select the reason for this report.",
           "Generic": {
-            "Title": "Signup Failed",
+            "Title": "Report Failed",
             "Description": "Please try again later."
           },
           "SubmitFailed": {
-            "Title": "Signup Failed",
+            "Title": "Report Failed",
             "Description": "The form failed to submit, please try again."
           },
-          "UsernameValidationFailed": {
-            "Title": "Signup Failed",
-            "Description": "Username must be within 2 to 30 characters and not have special characters."
-          },
-          "PasswordValidationFailed": {
-            "Title": "Signup Failed",
-            "Description": "Password must be at minimum 2 characters."
-          },
-          "EmailValidationFailed": {
-            "Title": "Signup Failed",
-            "Description": "Email must be a valid address."
-          },
-          "EmailOrUsernameTaken": {
-            "Title": "Signup Failed",
-            "Description": "Email or username is taken."
-          },
           "TimedOut": {
-            "Title": "Signup Failed",
-            "Description": "The login timed out."
+            "Title": "Report Failed",
+            "Description": "The submission timed out."
           },
           "DatabaseError": {
-            "Title": "Signup Failed",
+            "Title": "Report Failed",
             "Description": "The database is currently experiencing issues, please try again later."
-          },
-          "Form": {
-            "UsernameTooShort": "Username must be at least 2 characters.",
-            "UsernameTooLong": "Username must be less than 20 characters.",
-            "PasswordTooShort": "Password must be at least 2 characters.",
-            "PasswordTooLong": "Password is too long.",
-            "InvalidEmail": "Email must be valid."
-          }
-        }
-      }
-    },
-    "Components": {
-      "Post": {
-        "Post": "Post",
-        "Vote": {
-          "Vote": "Vote",
-          "Upvote": "Upvote (currently {upvotes, number})",
-          "Downvote": "Downvote (currently {downvotes, number})",
-          "Error": {
-            "FailedUpvote": {
-              "Title": "Failed to upvote.",
-              "Description": "Try again later."
-            },
-            "FailedRemoveUpvote": {
-              "Title": "Failed to remove upvote",
-              "Description": "Try again later."
-            },
-            "FailedDownvote": {
-              "Title": "Failed to downvote.",
-              "Description": "Try again later."
-            },
-            "FailedRemoveDownvote": {
-              "Title": "Failed to remove downvote",
-              "Description": "Try again later."
-            },
-            "Login": {
-              "Title": "You need to be logged in to vote.",
-              "LoginButton": "Login"
-            }
-          },
-          "Loading": "Loading"
-        },
-        "Comments": "Comments",
-        "Share": {
-          "Share": "Share",
-          "UnsupportedTitle": "Sharing is unsupported",
-          "UnsupportedSubtitle": "Your browser does not support web sharing.",
-          "UnsupportedButton": "Okay"
-        },
-        "ReportButton": {
-          "Report": "Report",
-          "Subtitle": "Please fill in the below information to submit a report.",
-          "SelectReason": "Select Reason",
-          "Reasons": {
-            "Harassment": "Harassment",
-            "IllegalContent": "Illegal Content",
-            "Spam": "Spam",
-            "SelfHarm": "Self Harm"
-          },
-          "OtherInformation": "Other Information",
-          "ButtonCancel": "Cancel",
-          "ButtonReport": "Report",
-          "Error": {
-            "InformationNotFilledIn": "Please provide information about the report.",
-            "SelectReason": "Please select the reason for this report.",
-            "Generic": {
-              "Title": "Report Failed",
-              "Description": "Please try again later."
-            },
-            "SubmitFailed": {
-              "Title": "Report Failed",
-              "Description": "The form failed to submit, please try again."
-            },
-            "TimedOut": {
-              "Title": "Report Failed",
-              "Description": "The submission timed out."
-            },
-            "DatabaseError": {
-              "Title": "Report Failed",
-              "Description": "The database is currently experiencing issues, please try again later."
-            }
-          },
-          "Success": {
-            "Title": "Report submitted successfully",
-            "Description": "It will be reviewed to make sure it's valid."
           }
         },
-        "SaveButton": {
-          "Save": "Save",
-          "Saved": "Saved",
-          "Toasts": {
-            "Saved": {
-              "Title": "Success!",
-              "Description": "Post was successfully saved."
-            },
-            "FailedSave": {
-              "Title": "Failed to save post",
-              "Description": "Please try again."
-            },
-            "Unsaved": {
-              "Title": "Success!",
-              "Description": "Post was successfully unsaved."
-            },
-            "FailedUnsave": {
-              "Title": "Failed to unsave post",
-              "Description": "Please try again."
-            }
-          }
-        },
-        "DeleteDialog": {
-          "Title": "Delete this post?",
-          "Subtitle": "This action cannot be reversed, choose wisely.",
-          "Cancel": "Cancel",
-          "Delete": "Delete",
-          "ModeratorLabel": "Delete as moderator"
-        },
-        "Loading": "Loading"
-      },
-      "PostList": {
-        "Error": {
-          "Generic": "Sorry, something went wrong.",
-          "NoPosts": "Looks like there's no posts here.",
-          "CouldNotFetch": "Sorry, the posts couldn't be fetched.",
-          "Unauthorized": "You're not authorized to view this."
-        },
-        "Sorts": {
-          "Sort": "Sort",
-          "Hot": "Hot",
-          "New": "New",
-          "Old": "Old",
-          "Top": "Top",
-          "Controversial": "Controversial",
-          "Comments": "Comments"
-        },
-        "Views": {
-          "View": "View",
-          "Card": "Card",
-          "Compact": "Compact"
-        },
-        "Filters": {
-          "Filters": "Filters",
-          "Toggle": {
-            "Expand": "Expand",
-            "Cuir ar ceal": "Cuir ar ceal",
-            "ToggleLabel": "{expandOrClose} Filters"
-          }
-        },
-        "Pages": {
-          "Of": "of",
-          "NextPage": "Next Page",
-          "LastPage": "Last Page"
-        },
-        "Loading": "Loading"
-      },
-      "Community": {
-        "Join": "Join",
-        "CommunityHasNoImage": "This community has no image.",
-        "CommunityHasNoDescription": "This community has no description."
-      },
-      "ListError": {
-        "DefaultTitle": "Sorry, an error occurred.",
-        "DefaultSubtitle": "You can reload or try again later.",
-        "Reload": "Reload"
-      },
-      "CreateComment": {
-        "Comment": "Comment",
-        "SubmitComment": "Submit Comment",
         "Success": {
-          "Title": "Comment succcessfully submitted."
-        },
-        "Error": {
-          "Title": "Something went wrong.",
-          "Description": "Try commenting again and refreshing the page."
-        },
-        "Blank": "Comment must not be blank.",
-        "Submit": "Submit",
-        "InputLabel": "Content"
-      },
-      "CreateReply": {
-        "Reply": "Reply",
-        "Success": {
-          "Title": "Reply succcessfully submitted."
-        },
-        "Error": {
-          "Title": "Something went wrong.",
-          "Description": "Try replying again and refreshing the page."
-        },
-        "Blank": "Reply must not be blank.",
-        "Submit": "Submit",
-        "InputLabel": "Reply to this comment"
-      },
-      "EditComment": {
-        "Edit": "Edit",
-        "Success": {
-          "Title": "Comment succcessfully edited."
-        },
-        "Error": {
-          "Title": "Something went wrong.",
-          "Description": "Try editing again and refreshing the page."
-        },
-        "Blank": "Edit must not be blank.",
-        "Submit": "Submit",
-        "InputLabel": "Edit your comment"
-      },
-      "CommentList": {
-        "LoadingComments": "Loading Comments",
-        "NoComments": {
-          "Title": "Looks like there's no comments here.",
-          "Subtitle": "Try starting a discussion."
+          "Title": "Report submitted successfully",
+          "Description": "It will be reviewed to make sure it's valid."
         }
       },
-      "ReplyList": {
-        "ReplyFetchFailed": "Failed to get replies.",
-        "LoadReplies": "Load Replies"
-      },
-      "Comment": {
-        "DeleteDialog": {
-          "Title": "Delete this comment?",
-          "Subtitle": "This action cannot be reversed, choose wisely.",
-          "Cancel": "Cancel",
-          "Delete": "Delete"
-        },
-        "CommentEditLabel": "This comment has been edited."
-      },
-      "CreateDialog": {
-        "Create": "Create",
-        "CreateSubtitle": "What would you like to create?",
-        "CreatePost": "Post",
-        "CreateCommunity": "Community"
-      },
-      "Alert": {
-        "CloseAlert": "Cuir ar ceal Alert"
-      },
-      "PostView": {
-        "Error": {
-          "Private": {
-            "Title": "This post has been set as private.",
-            "Description": "Only the author can see it."
+      "SaveButton": {
+        "Save": "Save",
+        "Saved": "Saved",
+        "Toasts": {
+          "Saved": {
+            "Title": "Success!",
+            "Description": "Post was successfully saved."
+          },
+          "FailedSave": {
+            "Title": "Failed to save post",
+            "Description": "Please try again."
+          },
+          "Unsaved": {
+            "Title": "Success!",
+            "Description": "Post was successfully unsaved."
+          },
+          "FailedUnsave": {
+            "Title": "Failed to unsave post",
+            "Description": "Please try again."
           }
         }
-      }
+      },
+      "DeleteDialog": {
+        "Title": "Delete this post?",
+        "Subtitle": "This action cannot be reversed.",
+        "Cancel": "Cancel",
+        "Delete": "Delete",
+        "ModeratorLabel": "Delete as moderator"
+      },
+      "Loading": "Loading"
     },
-    "/": {
-      "SignupSuccess": {
-        "Title": "Signup successful",
-        "Description": "Enjoy your new account!"
+    "PostList": {
+      "Error": {
+        "Generic": "Sorry, something went wrong.",
+        "NoPosts": "Looks like there's no posts here.",
+        "CouldNotFetch": "Sorry, the posts couldn't be fetched.",
+        "Unauthorized": "You're not authorized to view this."
       },
-      "LoginSuccess": {
-        "Title": "Login successful",
-        "Description": "You are now authenticated."
-      }
-    },
-    "/dev/ui": {
-      "Title": "User Interface",
-      "Buttons": {
-        "Buttons": "Buttons",
-        "ButtonsDisabled": "Buttons (Disabled)",
-        "ButtonsLoading": "Buttons (Loading)",
-        "ButtonsIcons": "Buttons (Icons)",
-        "ButtonGroup": "Button Group",
-        "MainButton": "Main Button",
-        "SecondaryButton": "Secondary Button",
-        "DestructiveButton": "Destructive Button",
-        "GhostButton": "Ghost Button"
-      },
-      "Alerts": {
-        "Alerts": "Alerts",
-        "NoticeAlert": {
-          "Title": "This is a notice alert.",
-          "Subtitle": "Use it for non-important information that, while beneficial to know, isn't urgent."
-        },
-        "WarningAlert": {
-          "Title": "This is a warning alert.",
-          "Subtitle": "Use it when the user needs to know something urgently."
-        },
-        "ErrorAlert": {
-          "Title": "This is an error alert.",
-          "Subtitle": "Use it when something goes wrong, e.g. a post fails to submit, or the user can't be logged in."
-        },
-        "SuccessAlert": {
-          "Title": "This is a success alert.",
-          "Subtitle": "Use it when something succeeds, e.g. a post is successfully submitted, or the user successfully updates their profile."
-        },
-        "NoSubtitleAlert": {
-          "Title": "Sorry, the settings failed to apply."
-        },
-        "NoCloseButtonAlert": {
-          "Title": "You'll be unable to comment on this post after locking it."
-        }
-      },
-      "Dialog": {
-        "Dialog": "Dialog",
-        "Customisation": {
-          "IconEnabledCheckbox": "Icon (defaults to warning icon)",
-          "CloseButtonEnabledCheckbox": "Cuir ar ceal Button",
-          "Title": "Title",
-          "Subtitle": "Subtitle",
-          "Button1Type": "Button 1 Type",
-          "Button1Text": "Button 1 Text",
-          "Button2Type": "Button 2 Type",
-          "Button2Text": "Button 2 Text",
-          "TriggerButton": "Trigger Example Dialog"
-        }
-      },
-      "Select": {
-        "Select": "Select",
+      "Sorts": {
         "Sort": "Sort",
-        "Values": {
-          "Hot": "Hot",
-          "New": "New",
-          "Old": "Old",
-          "Top": "Top",
-          "Controversial": "Controversial",
-          "Comments": "Comments"
-        },
-        "SelectedValue": "Selected Value"
+        "Hot": "Hot",
+        "New": "New",
+        "Old": "Old",
+        "Top": "Top",
+        "Controversial": "Controversial",
+        "Comments": "Comments"
       },
-      "Languages": "Languages",
-      "Menus": {
-        "Menus": "Menus",
-        "TriggerMenu": {
-          "Trigger": "Trigger",
-          "Link": "Link",
-          "LinkWithIcon": "Link w/ Icon",
-          "LinkWithIconAtEnd": "Link w/ Icon at end",
-          "Button": "Button",
-          "ButtonWithIcon": "Button w/ Icon",
-          "ButtonWithIconAtEnd": "Button w/ Icon at end",
-          "ButtonWithShortcutText": "Button w/ Shortcut Text"
-        },
-        "ImageMenu": {
-          "Image": "Image",
-          "SaveImage": "Save Image",
-          "ReportImage": "Report Image",
-          "Metadata": "Metadata"
+      "Views": {
+        "View": "View",
+        "Card": "Card",
+        "Compact": "Compact"
+      },
+      "Filters": {
+        "Filters": "Filters",
+        "Toggle": {
+          "Expand": "Expand",
+          "Cuir ar ceal": "Cuir ar ceal",
+          "ToggleLabel": "{expandOrClose} Filters"
         }
       },
-      "Tabs": {
-        "Tabs": "Tabs",
-        "Tab": "Tab",
-        "Inbox": "Inbox",
-        "Archived": "Archived",
-        "All": "All",
-        "Filled": "Filled",
-        "Underlined": "Underlined",
-        "FilledGhost": "Filled Ghost"
+      "Pages": {
+        "Of": "of",
+        "NextPage": "Next Page",
+        "LastPage": "Last Page"
       },
-      "Tables": {
-        "Tables": "Tables",
-        "MetadataTable": {
-          "Filename": "Filename",
-          "Title": "Title",
-          "Description": "Description",
-          "CreatedAt": "Created At",
-          "Camera": "Camera",
-          "ExposureTime": "Exposure Time",
-          "Aperture": "Aperture",
-          "FocalLength": "Focal Length",
-          "ISO": "ISO",
-          "Latitude": "Latitude",
-          "Longitude": "Longitude",
-          "Width": "Width",
-          "Height": "Height"
-        },
-        "BannedUsersTable": {
-          "User": "User",
-          "Reason": "Reason",
-          "Until": "Until",
-          "Reasons": {
-            "Spam": "Spam",
-            "Harassment": "Harassment"
-          },
-          "Permanently": "Permanently"
-        }
+      "Loading": "Loading"
+    },
+    "Community": {
+      "Join": "Join",
+      "CommunityHasNoImage": "This community has no image.",
+      "CommunityHasNoDescription": "This community has no description."
+    },
+    "ListError": {
+      "DefaultTitle": "Sorry, an error occurred.",
+      "DefaultSubtitle": "You can reload or try again later.",
+      "Reload": "Reload"
+    },
+    "CreateComment": {
+      "Comment": "Comment",
+      "SubmitComment": "Submit Comment",
+      "Success": {
+        "Title": "Comment succcessfully submitted."
       },
-      "Toasts": {
-        "Toasts": "Toasts",
-        "Types": {
-          "Notice": "Notice",
-          "Warning": "Warning",
-          "Success": "Success",
-          "Error": "Error",
-          "Example": "Example",
-          "LoadingToast": "Loading Toast"
-        },
-        "Messages": {
-          "Titles": {
-            "PostCreationFailed": "Failed to create post"
-          },
-          "Descriptions": {
-            "NoticeToast": "This is a notice toast.",
-            "WarningToast": "This is a warning toast.",
-            "SuccessToast": "This is a success toast.",
-            "ErrorToast": "This is a error toast.",
-            "PostCreationFailed": "Try again or check back later, there may be a database issue.",
-            "RetryFailed": "The retry didn't succeed, please try again later."
-          }
-        }
-      }
-    },
-    "/create": {
-      "Heading": "Create",
-      "Post": "Post",
-      "PostSubtitle": "Share your ideas with the world.",
-      "Community": "Community",
-      "CommunitySubtitle": "Create the perfect place for your topic.",
-      "/post": {
-        "Heading": "Create Post",
-        "Text": "Text",
-        "Image": "Image",
-        "Link": "Link",
-        "PostForm": {
-          "Error": {
-            "Generic": {
-              "Title": "Sorry, something went wrong.",
-              "Description": "Please try again later."
-            },
-            "AuthFail": {
-              "Title": "Authentication Failed",
-              "Description": "You may need to login again."
-            },
-            "CommunityDoesNotExist": {
-              "Title": "Community doesn't exist.",
-              "Description": "That community doesn't exist, make sure you spelled it correctly."
-            }
-          },
-          "SuccessToast": {
-            "Title": "Success!",
-            "Description": "Your post was successfully created, redirecting..."
-          },
-          "Community": "Community",
-          "Title": "Title",
-          "Content": "Content",
-          "Preview": "Preview",
-          "PreviewDescription": "Start typing to see a preview.",
-          "Create": "Create"
-        },
-        "LinkPostForm": {
-          "Error": {
-            "Generic": {
-              "Title": "Sorry, something went wrong.",
-              "Description": "Please try again later."
-            },
-            "AuthFail": {
-              "Title": "Authentication Failed",
-              "Description": "You may need to login again."
-            },
-            "CommunityDoesNotExist": {
-              "Title": "Community doesn't exist.",
-              "Description": "That community doesn't exist, make sure you spelled it correctly."
-            }
-          },
-          "SuccessToast": {
-            "Title": "Success!",
-            "Description": "Your post was successfully created, redirecting..."
-          },
-          "Community": "Community",
-          "Title": "Title",
-          "Link": "Link",
-          "Create": "Create"
-        },
-        "ImagePostForm": {
-          "Error": {
-            "Generic": {
-              "Title": "Sorry, something went wrong.",
-              "Description": "Please try again later."
-            },
-            "AuthFail": {
-              "Title": "Authentication Failed",
-              "Description": "You may need to login again."
-            },
-            "CommunityDoesNotExist": {
-              "Title": "Community doesn't exist.",
-              "Description": "That community doesn't exist, make sure you spelled it correctly."
-            },
-            "UploadFail": {
-              "Title": "Image failed to upload.",
-              "Description": "Try uploading it again."
-            },
-            "NoImage": {
-              "Title": "No Image",
-              "Description": "Please provide an image for your post."
-            }
-          },
-          "SuccessToast": {
-            "Title": "Success!",
-            "Description": "Your post was successfully created, redirecting you now."
-          },
-          "Community": "Community",
-          "Title": "Title",
-          "Image": "Image",
-          "Create": "Create",
-          "UploadText": "Click to upload your image"
-        },
-        "CommunityForm": {
-          "Error": {
-            "Generic": {
-              "Title": "Sorry, something went wrong.",
-              "Description": "Please try again later."
-            },
-            "AuthFail": {
-              "Title": "Authentication Failed",
-              "Description": "You may need to login again."
-            },
-            "CommunityDoesNotExist": {
-              "Title": "Community doesn't exist.",
-              "Description": "That community doesn't exist, make sure you spelled it correctly."
-            },
-            "NameTaken": {
-              "Title": "That name is taken.",
-              "Description": "Try another, or something similar"
-            },
-            "UploadFail": {
-              "Title": "Image failed to upload.",
-              "Description": "Try uploading it again."
-            },
-            "NoImage": {
-              "Title": "No Image",
-              "Description": "Please provide an image for your post."
-            }
-          },
-          "SuccessToast": {
-            "Title": "Success!",
-            "Description": "Your community was successfully created, redirecting you now."
-          },
-          "Name": "Name",
-          "Description": "Description",
-          "SidebarContent": "Sidebar Content",
-          "Image": "Image",
-          "Create": "Create",
-          "UploadText": "Click to upload your image",
-          "Sidebar": {
-            "Information": {
-              "RelatedCommunities": {
-                "Title": "None Yet",
-                "Description": "Your community has to be created for this to work."
-              }
-            }
-          }
-        }
+      "Error": {
+        "Title": "Something went wrong.",
+        "Description": "Try commenting again and refreshing the page."
       },
-      "/community": {
-        "Heading": "Create Community"
+      "Blank": "Comment must not be blank.",
+      "Submit": "Submit",
+      "InputLabel": "Content"
+    },
+    "CreateReply": {
+      "Reply": "Reply",
+      "Success": {
+        "Title": "Reply succcessfully submitted."
+      },
+      "Error": {
+        "Title": "Something went wrong.",
+        "Description": "Try replying again and refreshing the page."
+      },
+      "Blank": "Reply must not be blank.",
+      "Submit": "Submit",
+      "InputLabel": "Reply to this comment"
+    },
+    "EditComment": {
+      "Edit": "Edit",
+      "Success": {
+        "Title": "Comment succcessfully edited."
+      },
+      "Error": {
+        "Title": "Something went wrong.",
+        "Description": "Try editing again and refreshing the page."
+      },
+      "Blank": "Edit must not be blank.",
+      "Submit": "Submit",
+      "InputLabel": "Edit your comment"
+    },
+    "CommentList": {
+      "LoadingComments": "Loading Comments",
+      "NoComments": {
+        "Title": "Looks like there's no comments here.",
+        "Subtitle": "Try starting a discussion."
       }
     },
-    "/posts": {
-      "/saved": {
-        "Heading": "Saved Posts"
-      }
+    "ReplyList": {
+      "ReplyFetchFailed": "Failed to get replies.",
+      "LoadReplies": "Load Replies"
     },
-    "/search": {
-      "Heading": "Search",
-      "Form": {
-        "SearchTypes": {
-          "Type": "Type",
-          "Posts": "Posts",
-          "Communities": "Communities",
-          "Users": "Users"
-        },
-        "SearchPlaceholder": "Search {searchType}",
-        "NoResultsTitle": "No {results} Found",
-        "NoResultsSubtitle": "That's odd, maybe check your spelling.",
-        "SearchErrorTitle": "Sorry, an error occurred.",
-        "SearchErrorSubtitle": "Please try again later."
-      }
+    "Comment": {
+      "DeleteDialog": {
+        "Title": "Delete this comment?",
+        "Subtitle": "This action cannot be reversed, choose wisely.",
+        "Cancel": "Cancel",
+        "Delete": "Delete"
+      },
+      "CommentEditLabel": "This comment has been edited."
     },
-    "/c": {
-      "Community": "Community"
+    "CreateDialog": {
+      "Create": "Create",
+      "CreateSubtitle": "What would you like to create?",
+      "CreatePost": "Post",
+      "CreateCommunity": "Community"
+    },
+    "Alert": {
+      "CloseAlert": "Cuir ar ceal Alert"
+    },
+    "PostView": {
+      "Error": {
+        "Private": {
+          "Title": "This post has been set as private.",
+          "Description": "Only the author can see it."
+        }
+      }
     }
+  },
+  "/": {
+    "SignupSuccess": {
+      "Title": "Signup successful",
+      "Description": "Enjoy your new account!"
+    },
+    "LoginSuccess": {
+      "Title": "Login successful",
+      "Description": "You are now authenticated."
+    }
+  },
+  "/dev/ui": {
+    "Title": "User Interface",
+    "Buttons": {
+      "Buttons": "Buttons",
+      "ButtonsDisabled": "Buttons (Disabled)",
+      "ButtonsLoading": "Buttons (Loading)",
+      "ButtonsIcons": "Buttons (Icons)",
+      "ButtonGroup": "Button Group",
+      "MainButton": "Main Button",
+      "SecondaryButton": "Secondary Button",
+      "DestructiveButton": "Destructive Button",
+      "GhostButton": "Ghost Button"
+    },
+    "Alerts": {
+      "Alerts": "Alerts",
+      "NoticeAlert": {
+        "Title": "This is a notice alert.",
+        "Subtitle": "Use it for non-important information that, while beneficial to know, isn't urgent."
+      },
+      "WarningAlert": {
+        "Title": "This is a warning alert.",
+        "Subtitle": "Use it when the user needs to know something urgently."
+      },
+      "ErrorAlert": {
+        "Title": "This is an error alert.",
+        "Subtitle": "Use it when something goes wrong, e.g. a post fails to submit, or the user can't be logged in."
+      },
+      "SuccessAlert": {
+        "Title": "This is a success alert.",
+        "Subtitle": "Use it when something succeeds, e.g. a post is successfully submitted, or the user successfully updates their profile."
+      },
+      "NoSubtitleAlert": {
+        "Title": "Sorry, the settings failed to apply."
+      },
+      "NoCloseButtonAlert": {
+        "Title": "You'll be unable to comment on this post after locking it."
+      }
+    },
+    "Dialog": {
+      "Dialog": "Dialog",
+      "Customisation": {
+        "IconEnabledCheckbox": "Icon (defaults to warning icon)",
+        "CloseButtonEnabledCheckbox": "Cuir ar ceal Button",
+        "Title": "Title",
+        "Subtitle": "Subtitle",
+        "Button1Type": "Button 1 Type",
+        "Button1Text": "Button 1 Text",
+        "Button2Type": "Button 2 Type",
+        "Button2Text": "Button 2 Text",
+        "TriggerButton": "Trigger Example Dialog"
+      }
+    },
+    "Select": {
+      "Select": "Select",
+      "Sort": "Sort",
+      "Values": {
+        "Hot": "Hot",
+        "New": "New",
+        "Old": "Old",
+        "Top": "Top",
+        "Controversial": "Controversial",
+        "Comments": "Comments"
+      },
+      "SelectedValue": "Selected Value"
+    },
+    "Languages": "Languages",
+    "Menus": {
+      "Menus": "Menus",
+      "TriggerMenu": {
+        "Trigger": "Trigger",
+        "Link": "Link",
+        "LinkWithIcon": "Link w/ Icon",
+        "LinkWithIconAtEnd": "Link w/ Icon at end",
+        "Button": "Button",
+        "ButtonWithIcon": "Button w/ Icon",
+        "ButtonWithIconAtEnd": "Button w/ Icon at end",
+        "ButtonWithShortcutText": "Button w/ Shortcut Text"
+      },
+      "ImageMenu": {
+        "Image": "Image",
+        "SaveImage": "Save Image",
+        "ReportImage": "Report Image",
+        "Metadata": "Metadata"
+      }
+    },
+    "Tabs": {
+      "Tabs": "Tabs",
+      "Tab": "Tab",
+      "Inbox": "Inbox",
+      "Archived": "Archived",
+      "All": "All",
+      "Filled": "Filled",
+      "Underlined": "Underlined",
+      "FilledGhost": "Filled Ghost"
+    },
+    "Tables": {
+      "Tables": "Tables",
+      "MetadataTable": {
+        "Filename": "Filename",
+        "Title": "Title",
+        "Description": "Description",
+        "CreatedAt": "Created At",
+        "Camera": "Camera",
+        "ExposureTime": "Exposure Time",
+        "Aperture": "Aperture",
+        "FocalLength": "Focal Length",
+        "ISO": "ISO",
+        "Latitude": "Latitude",
+        "Longitude": "Longitude",
+        "Width": "Width",
+        "Height": "Height"
+      },
+      "BannedUsersTable": {
+        "User": "User",
+        "Reason": "Reason",
+        "Until": "Until",
+        "Reasons": {
+          "Spam": "Spam",
+          "Harassment": "Harassment"
+        },
+        "Permanently": "Permanently"
+      }
+    },
+    "Toasts": {
+      "Toasts": "Toasts",
+      "Types": {
+        "Notice": "Notice",
+        "Warning": "Warning",
+        "Success": "Success",
+        "Error": "Error",
+        "Example": "Example",
+        "LoadingToast": "Loading Toast"
+      },
+      "Messages": {
+        "Titles": {
+          "PostCreationFailed": "Failed to create post"
+        },
+        "Descriptions": {
+          "NoticeToast": "This is a notice toast.",
+          "WarningToast": "This is a warning toast.",
+          "SuccessToast": "This is a success toast.",
+          "ErrorToast": "This is a error toast.",
+          "PostCreationFailed": "Try again or check back later, there may be a database issue.",
+          "RetryFailed": "The retry didn't succeed, please try again later."
+        }
+      }
+    }
+  },
+  "/create": {
+    "Heading": "Create",
+    "Post": "Post",
+    "PostSubtitle": "Share your ideas with the world.",
+    "Community": "Community",
+    "CommunitySubtitle": "Create the perfect place for your topic.",
+    "/post": {
+      "Heading": "Create Post",
+      "Text": "Text",
+      "Image": "Image",
+      "Link": "Link",
+      "PostForm": {
+        "Error": {
+          "Generic": {
+            "Title": "Sorry, something went wrong.",
+            "Description": "Please try again later."
+          },
+          "AuthFail": {
+            "Title": "Authentication Failed",
+            "Description": "You may need to login again."
+          },
+          "CommunityDoesNotExist": {
+            "Title": "Community doesn't exist.",
+            "Description": "That community doesn't exist, make sure you spelled it correctly."
+          }
+        },
+        "SuccessToast": {
+          "Title": "Success!",
+          "Description": "Your post was successfully created, redirecting..."
+        },
+        "Community": "Community",
+        "Title": "Title",
+        "Content": "Content",
+        "Preview": "Preview",
+        "PreviewDescription": "Start typing to see a preview.",
+        "Create": "Create"
+      },
+      "LinkPostForm": {
+        "Error": {
+          "Generic": {
+            "Title": "Sorry, something went wrong.",
+            "Description": "Please try again later."
+          },
+          "AuthFail": {
+            "Title": "Authentication Failed",
+            "Description": "You may need to login again."
+          },
+          "CommunityDoesNotExist": {
+            "Title": "Community doesn't exist.",
+            "Description": "That community doesn't exist, make sure you spelled it correctly."
+          }
+        },
+        "SuccessToast": {
+          "Title": "Success!",
+          "Description": "Your post was successfully created, redirecting..."
+        },
+        "Community": "Community",
+        "Title": "Title",
+        "Link": "Link",
+        "Create": "Create"
+      },
+      "ImagePostForm": {
+        "Error": {
+          "Generic": {
+            "Title": "Sorry, something went wrong.",
+            "Description": "Please try again later."
+          },
+          "AuthFail": {
+            "Title": "Authentication Failed",
+            "Description": "You may need to login again."
+          },
+          "CommunityDoesNotExist": {
+            "Title": "Community doesn't exist.",
+            "Description": "That community doesn't exist, make sure you spelled it correctly."
+          },
+          "UploadFail": {
+            "Title": "Image failed to upload.",
+            "Description": "Try uploading it again."
+          },
+          "NoImage": {
+            "Title": "No Image",
+            "Description": "Please provide an image for your post."
+          }
+        },
+        "SuccessToast": {
+          "Title": "Success!",
+          "Description": "Your post was successfully created, redirecting you now."
+        },
+        "Community": "Community",
+        "Title": "Title",
+        "Image": "Image",
+        "Create": "Create",
+        "UploadText": "Click to upload your image"
+      },
+      "CommunityForm": {
+        "Error": {
+          "Generic": {
+            "Title": "Sorry, something went wrong.",
+            "Description": "Please try again later."
+          },
+          "AuthFail": {
+            "Title": "Authentication Failed",
+            "Description": "You may need to login again."
+          },
+          "CommunityDoesNotExist": {
+            "Title": "Community doesn't exist.",
+            "Description": "That community doesn't exist, make sure you spelled it correctly."
+          },
+          "NameTaken": {
+            "Title": "That name is taken.",
+            "Description": "Try another, or something similar"
+          },
+          "UploadFail": {
+            "Title": "Image failed to upload.",
+            "Description": "Try uploading it again."
+          },
+          "NoImage": {
+            "Title": "No Image",
+            "Description": "Please provide an image for your post."
+          }
+        },
+        "SuccessToast": {
+          "Title": "Success!",
+          "Description": "Your community was successfully created, redirecting you now."
+        },
+        "Name": "Name",
+        "Description": "Description",
+        "SidebarContent": "Sidebar Content",
+        "Image": "Image",
+        "Create": "Create",
+        "UploadText": "Click to upload your image",
+        "Sidebar": {
+          "Information": {
+            "RelatedCommunities": {
+              "Title": "None Yet",
+              "Description": "Your community has to be created for this to work."
+            }
+          }
+        }
+      }
+    },
+    "/community": {
+      "Heading": "Create Community"
+    }
+  },
+  "/posts": {
+    "/saved": {
+      "Heading": "Saved Posts"
+    }
+  },
+  "/search": {
+    "Heading": "Search",
+    "Form": {
+      "SearchTypes": {
+        "Type": "Type",
+        "Posts": "Posts",
+        "Communities": "Communities",
+        "Users": "Users"
+      },
+      "SearchPlaceholder": "Search {searchType}",
+      "NoResultsTitle": "No {results} Found",
+      "NoResultsSubtitle": "That's odd, maybe check your spelling.",
+      "SearchErrorTitle": "Sorry, an error occurred.",
+      "SearchErrorSubtitle": "Please try again later."
+    }
+  },
+  "/c": {
+    "Community": "Community"
   }
-  
+}

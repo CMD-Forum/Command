@@ -1,17 +1,17 @@
 "use client";
 
-import { ChartNoAxesCombined, ChevronDown, ClockFading, Flame, MessageCircleMore, Newspaper, TrendingDown } from "lucide-react";
+import { ChartNoAxesCombined, ClockFading, Flame, Image, LayoutList, MessageCircleMore, Newspaper, TrendingDown } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Dispatch, SetStateAction, useMemo, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
 import { PostNew } from "@/components/posts/post";
 import { log } from "@/lib/utils";
 import { Post as PostType } from "@prisma/client";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import CreateDialog from "../create/create_dialog";
 import { ListError } from "../misc/listError";
-import { Button } from "../ui/button";
 import { Card } from "../ui/card";
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "../ui/pagination";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -26,6 +26,7 @@ export default function PostList({
     setExternalPage,
     externalSort,
     setExternalSort,
+    sameOrigin = true
 }: {
     url: string | URL;
     method?: string;
@@ -35,11 +36,11 @@ export default function PostList({
     setExternalPage?: Dispatch<SetStateAction<number>>;
     externalSort?: string;
     setExternalSort?: Dispatch<SetStateAction<string>>;
+    sameOrigin?: boolean;
 }) {
 
     const t = useTranslations("Components.PostList");
 
-    const [totalPosts, setTotalPosts] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
     const [errorCode, setErrorCode] = useState<string | number>();
@@ -52,9 +53,27 @@ export default function PostList({
     const page = externalPage ?? internalPage;
     const setPage = setExternalPage ?? setInternalPage;
 
-    const [filtersExpanded, setFiltersExpanded] = useState<boolean>(false);
+    const [postView, setPostView] = useState<string | undefined>(undefined);
 
-    // const token = localStorage.getItem("bearer_token");
+    useEffect(() => {
+        const fetchPostListStyle = async () => {
+            const POST_LIST_STYLE = document.cookie
+                .split('; ')
+                .find((row) => row.startsWith(`post_list_style=`))
+                ?.split('=')[1];
+            // document.cookie = `post_list_style=FullCard; path=/; max-age=${60 * 60 * 24 * 30}`;
+            if (POST_LIST_STYLE === "FullCard" || POST_LIST_STYLE === "ThumbnailCard") setPostView(POST_LIST_STYLE);
+            else setPostView("FullCard");
+        };
+        fetchPostListStyle();
+    }, []);
+
+    const changeView = (view: string) => {
+        setPostView(view);
+        document.cookie = `post_list_style=${view}; path=/; max-age=${60 * 60 * 24 * 30}`;
+    }
+
+    // const [filtersExpanded, setFiltersExpanded] = useState<boolean>(false);
 
     const FETCH_OPTIONS = useMemo(() => ({
         method: method || "GET",
@@ -66,28 +85,24 @@ export default function PostList({
         body: method !== "GET" ? JSON.stringify({ ...extraBodyParams }) : null,
     }), [method, /*token,*/ extraHeaders, extraBodyParams]);
 
-    const { data: posts, isLoading, isError, error, refetch } = useQuery({
+    const { data: posts, isError, error, refetch } = useSuspenseQuery({
         queryKey: ["post_list", sort, extraHeaders, extraBodyParams, page, url, method, /*token,*/ internalSort, FETCH_OPTIONS],
         queryFn: async () => {
             if (sort !== internalSort) setPage(0);
     
-            const res = await fetch(`${url}?sort=${sort}&page=${page}`, FETCH_OPTIONS);
+            const res = await fetch(`${sameOrigin && process.env.NEXT_PUBLIC_CURRENT_URL}${url}?sort=${sort}&page=${page}`, FETCH_OPTIONS);
 
             if (errorCode) setErrorCode(res.status);
             if (!res.ok) throw new Error(`[ERR] HTTP Error ${res.status} occurred while fetching posts`);
 
             const data = await res.json();
-            setTotalPosts(data.postCount);
             setTotalPages(Math.ceil(data.postCount / 10));
             return data.posts;
         },
-        retry: 1
+        retry: 1,
     });
-
-    const LOADING_SKELETONS = [];
-    for (let i = 0; i < 10; i++) LOADING_SKELETONS.push(<Skeleton className="h-[138px] !rounded-sm" key={i} />);
     
-    if (posts <= 0  || posts === null) return <ListError title={t("Error.NoPosts")} reloadButton />;
+    if (posts <= 0  || posts === null || !posts) return <ListError title={t("Error.NoPosts")} reloadButton />;
 
     if (isError) {
         log({ type: "error", message: error, scope: "post_list.tsx" });
@@ -102,12 +117,10 @@ export default function PostList({
                 return <ListError title={t("Error.CouldNotFetch")} reloadButton reloadFunction={refetch} />
         }
     }
-
-    if (!posts || posts.length === 0) return <ListError title={t("Error.NoPosts")} reloadButton />;
     
     return (
         <div className="flex flex-col w-full">
-            <Card className="flex !flex-row !px-6 justify-between w-full mb-2 items-center">
+            <Card className="flex !flex-row !p-4 !gap-0 justify-between w-full mb-2 items-center">
                 <div className="flex gap-2">
                     <Select defaultValue={sort} onValueChange={setSort}>
                         <SelectTrigger>
@@ -122,7 +135,16 @@ export default function PostList({
                             <SelectItem value="Comments"><MessageCircleMore />{t("Sorts.Comments")}</SelectItem>
                         </SelectContent>
                     </Select>
-                    <Button
+                    { postView ?
+                        <ToggleGroup variant="outline" type="single" defaultValue={postView} onValueChange={(value) => { if (value) changeView(value) }}>
+                            <ToggleGroupItem value="FullCard"><Image /></ToggleGroupItem>
+                            <ToggleGroupItem value="ThumbnailCard"><LayoutList /></ToggleGroupItem>
+                        </ToggleGroup>
+                    :
+                        <Skeleton className="w-25 h-9" />
+                    }
+
+                    {/*<Button
                         variant="outline"
                         onClick={() => setFiltersExpanded(!filtersExpanded)}
                         aria-label={t("Filters.Toggle.ToggleLabel", { expandOrClose: filtersExpanded ? t("Filters.Toggle.Close") : t("Filters.Toggle.Expand") })}
@@ -130,19 +152,11 @@ export default function PostList({
                         disabled
                     >
                         <ChevronDown className={`${filtersExpanded && "rotate-180"} transition-all`} />
-                    </Button>
+                    </Button>*/}
                 </div>   
                 <CreateDialog />                 
             </Card>
             <div className="mt-2" />
-            { isLoading 
-            ?
-                <>
-                    <div className="flex flex-col gap-4 w-full">{LOADING_SKELETONS}</div>
-                    <Skeleton className="mt-4 w-full" />
-                </>
-            : 
-                <>
                     <div className="flex flex-col gap-4 w-full">
                         {Array.isArray(posts) && posts.map((post: Partial<PostType> & { 
                             id: string, 
@@ -160,10 +174,16 @@ export default function PostList({
                             community: { 
                                 id: string,
                                 name: string,
+                                image: string | null,
+                                description: string | null,
+                                createdAt: Date,
                             },
                             author: {
                                 id: string,
                                 username: string;
+                                createdAt: Date;
+                                image: string | null;
+                                description: string | null;
                             }
                         }) => {
                             return (
@@ -183,6 +203,7 @@ export default function PostList({
                                         href={post.href}
                                         deletedByAdmin={post.deletedByAdmin}
                                         deletedByAuthor={post.deletedByAuthor}
+                                        view={postView as "FullCard" | "ThumbnailCard"}
                                     />
                                 </div>
                             );
@@ -255,8 +276,6 @@ export default function PostList({
                             </PaginationItem>
                         </PaginationContent>
                     </Pagination>
-                </>
-            }
         </div>
     );
 }

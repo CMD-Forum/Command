@@ -11,19 +11,37 @@ import remarkGfm from "remark-gfm";
 import dayjs from "@/lib/dayjs";
 
 import Image from "@/components/misc/image";
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { assets_paths } from "@/lib/asset-paths";
 import { authClient } from "@/lib/auth/auth-client";
 import useFetch from "@/lib/hooks/data/useFetch";
 import { Post as PostType } from "@prisma/client";
+import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import ProfileImage from "../account/ProfileImage";
 import Button from "../button/button";
 import Checkbox from "../checkbox/checkbox";
 import Dialog from "../dialog/dialog";
-import Menu, { MenuButton, MenuLink, MenuShare } from "../menu/menu";
+import Menu, {
+    MenuButton,
+    MenuLink,
+    MenuShare
+} from "../menu/menu";
 import Typography from "../misc/typography";
 import { SavePostButton } from "../posts/buttons/save_post_button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle
+} from "../ui/card";
 import { Label } from "../ui/label";
 import { DeleteAsAuthorButton } from "./buttons/delete_button";
 import ReportDialog from "./buttons/report_dialog";
@@ -66,17 +84,23 @@ export function Post(post: Partial<PostType> & {
     community: { 
         id: string,
         name: string,
+        image: string | null;
+        createdAt: Date;
+        description: string | null;
     },
     author: {
         id: string,
         username: string;
+        image: string | null;
+        createdAt: Date;
     },
     view?: "Card" | "Compact"
 }) {
 
     const { data: SESSION } = authClient.useSession();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
-    const { data: isModerator } = useFetch<string | boolean>({ url: "/api/community/moderation/isModerator", bodyParams: {"userID": `${post.author.id}`, "communityID": `${post.communityId}`}});
+    const { data: isModerator } = useFetch<string | boolean>({ url: "/api/community/moderation/isModerator", bodyParams: {"userID": `${SESSION?.user.id}`, "communityID": `${post.community.id}`}});
+
     const t = useTranslations("Components.Post");
 
     return (
@@ -158,12 +182,48 @@ export function Post(post: Partial<PostType> & {
                         </Dialog.Content>
                     </Dialog.Controlled>
                     <div className="hidden lg:flex w-full">
-                        <PostActions postID={post.id} postTitle={post.title} />
+                        <PostActions
+                            postInformation={{ 
+                                id: post.id, 
+                                title: post.title, 
+                                author: {
+                                    id: post.author.id,
+                                    username: post.author.username, 
+                                    image: post.author.image,
+                                    createdAt: post.author.createdAt,
+                                    isModerator: isModerator as boolean || false
+                                },
+                                community: {
+                                    name: post.community.name,
+                                    image: post.community.image,
+                                    createdAt: post.community.createdAt,
+                                    description: post.community.description
+                                }   
+                            }}
+                        />
                     </div>
                 </div>
             </div>
             <div className="flex w-full lg:!hidden">
-                <PostActions postID={post.id} postTitle={post.title} />
+                <PostActions
+                    postInformation={{ 
+                        id: post.id, 
+                        title: post.title, 
+                        author: {
+                            id: post.author.id,
+                            username: post.author.username, 
+                            image: post.author.image,
+                            createdAt: post.author.createdAt,
+                            isModerator: isModerator as boolean || false
+                        },
+                        community: {
+                            name: post.community.name,
+                            image: post.community.image,
+                            createdAt: post.community.createdAt,
+                            description: post.community.description
+                        }
+                    }}                
+                />
             </div>
         </div>
     )
@@ -177,34 +237,49 @@ export function PostNew(post: Partial<PostType> & {
     community: { 
         id: string,
         name: string,
+        image: string | null,
+        description: string | null,
+        createdAt: Date,
     },
     author: {
         id: string,
         username: string;
-    },
-    view?: "Card" | "Compact"
+        createdAt: Date;
+        image: string | null;
+        description: string | null;
+    }
+    view?: "FullCard" | "ThumbnailCard"
 }) {
 
     const { data: SESSION } = authClient.useSession();
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
-    const { data: isModerator } = useFetch<string | boolean>({ url: "/api/community/moderation/isModerator", bodyParams: {"userID": `${post.author.id}`, "communityID": `${post.communityId}`}});
+    const { data: isModerator } = useFetch<JSON | boolean>({ url: "/api/community/moderation/isModerator", bodyParams: {"userID": `${SESSION?.user.id}`, "communityID": `${post.community.id}`}});
+    
     const t = useTranslations("Components.Post");
     const isMobile = useIsMobile();
 
+    const [imageFailed, setImageFailed] = useState<boolean>(false);
+
     return (
-        <Card className={`!flex-row !gap-0 ${isMobile && "px-6"}`}>
-            { !isMobile &&
-                <CardContent>
-                    <Image 
-                        src={post.imageurl || "/TextPostFallback.svg"} 
-                        width={100} 
-                        height={100} 
-                        alt="Post Image" 
-                        className="!rounded-sm !object-cover" 
-                        priority
-                        quality={1}
-                        placeholder="blur"
-                        blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI-CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiBmaWxsPSIjMjIyMjI1Ii8-CjxwYXRoIGQ9Ik0yMTguNjE0IDMwMy40NTVWMjk3LjQ4OUMyMTguNjE0IDI4My44MTcgMjE5LjY5MSAyNzIuOTIxIDIyMS44NDUgMjY0LjhDMjI0IDI1Ni42OCAyMjcuMTkgMjUwLjE3NiAyMzEuNDE1IDI0NS4yODdDMjM1LjY0MSAyNDAuMzE1IDI0MC44MiAyMzUuODQxIDI0Ni45NTIgMjMxLjg2NEMyNTIuMjU1IDIyOC4zODQgMjU2Ljk3OCAyMjUuMDI4IDI2MS4xMjEgMjIxLjc5NkMyNjUuMzQ3IDIxOC41NjUgMjY4LjY2MSAyMTUuMTI2IDI3MS4wNjQgMjExLjQ4QzI3My41NSAyMDcuODM0IDI3NC43OTMgMjAzLjY5MSAyNzQuNzkzIDE5OS4wNTFDMjc0Ljc5MyAxOTQuOTA4IDI3My43OTggMTkxLjI2MiAyNzEuODEgMTg4LjExNEMyNjkuODIxIDE4NC45NjUgMjY3LjEyOCAxODIuNTIxIDI2My43MzEgMTgwLjc4MUMyNjAuMzM0IDE3OS4wNCAyNTYuNTYzIDE3OC4xNyAyNTIuNDIgMTc4LjE3QzI0Ny45NDYgMTc4LjE3IDI0My44MDMgMTc5LjIwNiAyMzkuOTkxIDE4MS4yNzhDMjM2LjI2MyAxODMuMzQ5IDIzMy4yMzggMTg2LjIwOCAyMzAuOTE4IDE4OS44NTRDMjI4LjY4MSAxOTMuNSAyMjcuNTYyIDE5Ny43MjUgMjI3LjU2MiAyMDIuNTMxSDE2My45MjZDMTY0LjA5MiAxODQuMzAyIDE2OC4yMzUgMTY5LjUxMiAxNzYuMzU1IDE1OC4xNkMxODQuNDc1IDE0Ni43MjUgMTk1LjI0NyAxMzguMzU2IDIwOC42NyAxMzMuMDUzQzIyMi4wOTQgMTI3LjY2NyAyMzYuODQzIDEyNC45NzQgMjUyLjkxOCAxMjQuOTc0QzI3MC42NSAxMjQuOTc0IDI4Ni40NzYgMTI3LjU4NSAzMDAuMzk2IDEzMi44MDVDMzE0LjMxNyAxMzcuOTQyIDMyNS4yOTYgMTQ1LjczMSAzMzMuMzMzIDE1Ni4xNzFDMzQxLjM3MSAxNjYuNTI5IDM0NS4zODkgMTc5LjQ5NiAzNDUuMzg5IDE5NS4wNzRDMzQ1LjM4OSAyMDUuMSAzNDMuNjQ5IDIxMy45MjQgMzQwLjE2OSAyMjEuNTQ4QzMzNi43NzIgMjI5LjA4OCAzMzIuMDA3IDIzNS43NTggMzI1Ljg3NiAyNDEuNTU4QzMxOS44MjcgMjQ3LjI3NiAzMTIuNzQyIDI1Mi40OTYgMzA0LjYyMiAyNTcuMjE5QzI5OC42NTYgMjYwLjY5OSAyOTMuNjQzIDI2NC4zMDMgMjg5LjU4MyAyNjguMDMyQzI4NS41MjMgMjcxLjY3OCAyODIuNDU3IDI3NS44NjIgMjgwLjM4NiAyODAuNTg1QzI3OC4zMTQgMjg1LjIyNSAyNzcuMjc4IDI5MC44NiAyNzcuMjc4IDI5Ny40ODlWMzAzLjQ1NUgyMTguNjE0Wk0yNDguOTQgMzg2Ljk3N0MyMzkuMzI5IDM4Ni45NzcgMjMxLjA4NCAzODMuNjIxIDIyNC4yMDcgMzc2LjkxQzIxNy40MTIgMzcwLjExNSAyMTQuMDU2IDM2MS44NzEgMjE0LjEzOSAzNTIuMTc2QzIxNC4wNTYgMzQyLjczIDIxNy40MTIgMzM0LjY1MSAyMjQuMjA3IDMyNy45NEMyMzEuMDg0IDMyMS4yMjggMjM5LjMyOSAzMTcuODcyIDI0OC45NCAzMTcuODcyQzI1OC4wNTUgMzE3Ljg3MiAyNjYuMDkyIDMyMS4yMjggMjczLjA1MyAzMjcuOTRDMjgwLjA5NiAzMzQuNjUxIDI4My42NTkgMzQyLjczIDI4My43NDEgMzUyLjE3NkMyODMuNjU5IDM1OC42MzkgMjgxLjk2IDM2NC41MjIgMjc4LjY0NiAzNjkuODI1QzI3NS40MTQgMzc1LjA0NSAyNzEuMTg4IDM3OS4yMyAyNjUuOTY4IDM4Mi4zNzlDMjYwLjc0OCAzODUuNDQ0IDI1NS4wNzIgMzg2Ljk3NyAyNDguOTQgMzg2Ljk3N1oiIGZpbGw9IndoaXRlIi8-CjxwYXRoIGQ9Ik0yMTguNjE0IDMwMy40NTVWMjk3LjQ4OUMyMTguNjE0IDI4My44MTcgMjE5LjY5MSAyNzIuOTIxIDIyMS44NDUgMjY0LjhDMjI0IDI1Ni42OCAyMjcuMTkgMjUwLjE3NiAyMzEuNDE1IDI0NS4yODdDMjM1LjY0MSAyNDAuMzE1IDI0MC44MiAyMzUuODQxIDI0Ni45NTIgMjMxLjg2NEMyNTIuMjU1IDIyOC4zODQgMjU2Ljk3OCAyMjUuMDI4IDI2MS4xMjEgMjIxLjc5NkMyNjUuMzQ3IDIxOC41NjUgMjY4LjY2MSAyMTUuMTI2IDI3MS4wNjQgMjExLjQ4QzI3My41NSAyMDcuODM0IDI3NC43OTMgMjAzLjY5MSAyNzQuNzkzIDE5OS4wNTFDMjc0Ljc5MyAxOTQuOTA4IDI3My43OTggMTkxLjI2MiAyNzEuODEgMTg4LjExNEMyNjkuODIxIDE4NC45NjUgMjY3LjEyOCAxODIuNTIxIDI2My43MzEgMTgwLjc4MUMyNjAuMzM0IDE3OS4wNCAyNTYuNTYzIDE3OC4xNyAyNTIuNDIgMTc4LjE3QzI0Ny45NDYgMTc4LjE3IDI0My44MDMgMTc5LjIwNiAyMzkuOTkxIDE4MS4yNzhDMjM2LjI2MyAxODMuMzQ5IDIzMy4yMzggMTg2LjIwOCAyMzAuOTE4IDE4OS44NTRDMjI4LjY4MSAxOTMuNSAyMjcuNTYyIDE5Ny43MjUgMjI3LjU2MiAyMDIuNTMxSDE2My45MjZDMTY0LjA5MiAxODQuMzAyIDE2OC4yMzUgMTY5LjUxMiAxNzYuMzU1IDE1OC4xNkMxODQuNDc1IDE0Ni43MjUgMTk1LjI0NyAxMzguMzU2IDIwOC42NyAxMzMuMDUzQzIyMi4wOTQgMTI3LjY2NyAyMzYuODQzIDEyNC45NzQgMjUyLjkxOCAxMjQuOTc0QzI3MC42NSAxMjQuOTc0IDI4Ni40NzYgMTI3LjU4NSAzMDAuMzk2IDEzMi44MDVDMzE0LjMxNyAxMzcuOTQyIDMyNS4yOTYgMTQ1LjczMSAzMzMuMzMzIDE1Ni4xNzFDMzQxLjM3MSAxNjYuNTI5IDM0NS4zODkgMTc5LjQ5NiAzNDUuMzg5IDE5NS4wNzRDMzQ1LjM4OSAyMDUuMSAzNDMuNjQ5IDIxMy45MjQgMzQwLjE2OSAyMjEuNTQ4QzMzNi43NzIgMjI5LjA4OCAzMzIuMDA3IDIzNS43NTggMzI1Ljg3NiAyNDEuNTU4QzMxOS44MjcgMjQ3LjI3NiAzMTIuNzQyIDI1Mi40OTYgMzA0LjYyMiAyNTcuMjE5QzI5OC42NTYgMjYwLjY5OSAyOTMuNjQzIDI2NC4zMDMgMjg5LjU4MyAyNjguMDMyQzI4NS41MjMgMjcxLjY3OCAyODIuNDU3IDI3NS44NjIgMjgwLjM4NiAyODAuNTg1QzI3OC4zMTQgMjg1LjIyNSAyNzcuMjc4IDI5MC44NiAyNzcuMjc4IDI5Ny40ODlWMzAzLjQ1NUgyMTguNjE0Wk0yNDguOTQgMzg2Ljk3N0MyMzkuMzI5IDM4Ni45NzcgMjMxLjA4NCAzODMuNjIxIDIyNC4yMDcgMzc2LjkxQzIxNy40MTIgMzcwLjExNSAyMTQuMDU2IDM2MS44NzEgMjE0LjEzOSAzNTIuMTc2QzIxNC4wNTYgMzQyLjczIDIxNy40MTIgMzM0LjY1MSAyMjQuMjA3IDMyNy45NEMyMzEuMDg0IDMyMS4yMjggMjM5LjMyOSAzMTcuODcyIDI0OC45NCAzMTcuODcyQzI1OC4wNTUgMzE3Ljg3MiAyNjYuMDkyIDMyMS4yMjggMjczLjA1MyAzMjcuOTRDMjgwLjA5NiAzMzQuNjUxIDI4My42NTkgMzQyLjczIDI4My43NDEgMzUyLjE3NkMyODMuNjU5IDM1OC42MzkgMjgxLjk2IDM2NC41MjIgMjc4LjY0NiAzNjkuODI1QzI3NS40MTQgMzc1LjA0NSAyNzEuMTg4IDM3OS4yMyAyNjUuOTY4IDM4Mi4zNzlDMjYwLjc0OCAzODUuNDQ0IDI1NS4wNzIgMzg2Ljk3NyAyNDguOTQgMzg2Ljk3N1oiIGZpbGw9InVybCgjcGFpbnQwX2xpbmVhcl8xXzIpIiBmaWxsLW9wYWNpdHk9IjAuMiIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzFfMiIgeDE9IjI1NiIgeTE9IjQ0IiB4Mj0iMjU2IiB5Mj0iNDY4IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI-CjxzdG9wIHN0b3Atb3BhY2l0eT0iMCIvPgo8c3RvcCBvZmZzZXQ9IjAuNjAyNTM2IiBzdG9wLW9wYWNpdHk9IjAuOSIvPgo8c3RvcCBvZmZzZXQ9IjAuNzAxNTU0IiBzdG9wLW9wYWNpdHk9IjAuOTUiLz4KPHN0b3Agb2Zmc2V0PSIxIi8-CjwvbGluZWFyR3JhZGllbnQ-CjwvZGVmcz4KPC9zdmc-Cg"
+        <Card className="!flex-row !gap-0 !py-4 !pr-4 !pl-4">
+            { post.view === "ThumbnailCard" && !isMobile && !imageFailed &&
+                <CardContent className="!p-0 !pr-4">
+                    <img
+                        src={post.imageurl || assets_paths.images.posts.NoImage} 
+                        alt={t("Image.Alt", { post_title: post.title, post_author: post.author.username })}
+                        className="!rounded-sm !object-cover max-w-[100px] max-h-[100px]"
+                        width={105}
+                        height={105}
+                    />
+                </CardContent>
+            }
+            { imageFailed &&
+                <CardContent className="!p-0 !pr-4">
+                    <img
+                        src={assets_paths.images.posts.ImageFailed}
+                        alt={t("Image.LoadingFailed")}
+                        className="!rounded-sm !object-cover max-w-[100px] max-h-[100px]"
+                        width={105}
+                        height={105}
                     />
                 </CardContent>            
             }
@@ -225,19 +300,97 @@ export function PostNew(post: Partial<PostType> & {
                             {t("Submitted")}
                             {" " + dayjs(post.createdAt).fromNow() + " "}
                             {t("By")}
-                            <a href={`/u/${post.author.username}`} className="text-primary hover:underline">
-                                u/{post.author.username}
-                            </a>
+                            <HoverCard>
+                                <HoverCardTrigger asChild>
+                                    <a href={`/u/${post.author.username}`} className="text-primary hover:underline">
+                                        u/{post.author.username}
+                                    </a>
+                                </HoverCardTrigger>
+                                <HoverCardContent className="w-80">
+                                    <div className="flex gap-4">
+                                        <Avatar>
+                                            <AvatarImage src={post.author.image || undefined} />
+                                            <AvatarFallback>{post.author.username.slice(0,2)}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="space-y-1">
+                                            <h4 className="text-sm font-semibold">u/{post.author.username}</h4>
+                                            { 
+                                                post.author.description !== "This user has not set their description."
+                                                && 
+                                                <p className="text-sm">
+                                                    {post.author.description}
+                                                </p>
+                                            }
+                                            <div className="text-muted-foreground text-xs">
+                                                {t("Joined")} {dayjs(post.author.createdAt).format("MMMM D, YYYY").toLocaleString()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </HoverCardContent>
+                            </HoverCard>
                             {t("To")}
-                            <a href={`/c/${post.community.name}`} className="text-primary hover:underline">
-                                c/{post.community.name}
-                            </a>
+                            <HoverCard>
+                                <HoverCardTrigger asChild>
+                                    <a href={`/c/${post.community.name}`} className="text-primary hover:underline">
+                                        c/{post.community.name}
+                                    </a>
+                                </HoverCardTrigger>
+                                <HoverCardContent className="w-80">
+                                    <div className="flex gap-4">
+                                        <Avatar>
+                                            <AvatarImage src={post.community.image || undefined} />
+                                            <AvatarFallback>{post.community.name.slice(0,1)}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="space-y-1">
+                                            <h4 className="text-sm font-semibold">c/{post.community.name}</h4>
+                                            { 
+                                                post.community.description !== "This community doesn't have a description."
+                                                && 
+                                                <p className="text-sm">
+                                                    {post.community.description}
+                                                </p>
+                                            }
+                                            <div className="text-muted-foreground text-xs">
+                                                {t("Created")} {dayjs(post.author.createdAt).format("MMMM D, YYYY").toLocaleString()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </HoverCardContent>
+                            </HoverCard>
                         </span>
                     </Label>
                 }
-                <CardTitle className={`leading-tight ${isMobile ? "mb-2" : ""}`}><a href={`/posts/${post.id}`}>{post.title}</a></CardTitle>
+                <CardTitle className={clsx("leading-tight mt-1", post.imageurl ? "mb-2" : "mb-0")}><a href={`/posts/${post.id}`}>{post.title}</a></CardTitle>
+                { post.view === "FullCard" && post.imageurl && !imageFailed &&
+                    <div className="flex justify-center items-center w-full h-full rounded-md" style={{ backgroundImage: `url(${post.imageurl})` }}>
+                        <img
+                            src={post.imageurl}
+                            onError={() => setImageFailed(true)}
+                            alt={t("Image.Alt", { post_title: post.title, post_author: post.author.username })}
+                            className={`!rounded-md !w-full !max-h-100 object-contain backdrop-blur-lg backdrop-brightness-50`}
+                        />
+                    </div>
+                }
                 <CardFooter className="!h-fit !px-0 !w-full">
-                    <PostActions postID={post.id} postTitle={post.title} />
+                    <PostActions 
+                        postInformation={{ 
+                            id: post.id, 
+                            title: post.title, 
+                            author: {
+                                id: post.author.id,
+                                username: post.author.username, 
+                                image: post.author.image,
+                                createdAt: post.author.createdAt,
+                                isModerator: isModerator as boolean || false
+                            },
+                            community: {
+                                name: post.community.name,
+                                image: post.community.image,
+                                createdAt: post.community.createdAt,
+                                description: post.community.description
+                            }
+                        }}
+                    />
                 </CardFooter>                
             </div>
         </Card>

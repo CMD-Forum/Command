@@ -349,7 +349,7 @@
           "Spam": "Spam",
           "SelfHarm": "Self Harm"
         },
-        "OtherInformation": "Other Information",
+        "OtherInformation": "Information",
         "ButtonCancel": "Cancel",
         "ButtonReport": "Report",
         "Error": {
@@ -388,7 +388,8 @@
           "ReportSucceeded": "Report successfully submitted.",
           "ReportFailed": "Report failed to submit.",
           "GenericError": "Something went wrong."
-        }
+        },
+        "ButtonReportLong": "Report this post"
       },
       "SaveButton": {
         "Save": "Save",
@@ -411,11 +412,12 @@
             "Description": "Please try again."
           }
         },
-        "Unsave": "Unsave"
+        "Unsave": "Unsave",
+        "SavePost": "Save Post"
       },
       "DeleteDialog": {
         "Title": "Delete this post?",
-        "Subtitle": "This action cannot be reversed, choose wisely.",
+        "Subtitle": "This action cannot be reversed.",
         "Cancel": "Cancel",
         "Delete": "Delete",
         "ModeratorLabel": "Delete as moderator"
@@ -425,7 +427,18 @@
       "Submitted": "Submitted",
       "By": "by",
       "To": "to",
-      "More": "More"
+      "More": "More",
+      "Joined": "Joined",
+      "Created": "Created",
+      "MoreDrawerDescription": "More Post Actions",
+      "DeleteActions": {
+        "Delete": "Delete Post",
+        "AsModerator": "(as moderator)"
+      },
+      "Image": {
+        "LoadingFailed": "Image failed to load",
+        "Alt": "Image attached to post titled \"{post_title}\" by user named {post_author}."
+      }
     },
     "PostList": {
       "Error": {

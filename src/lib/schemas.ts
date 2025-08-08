@@ -1,6 +1,5 @@
 import { ReportSubject } from "@prisma/client";
 import * as z from "zod";
-import { getTranslations } from "next-intl/server";
 
 export const LOGIN_SCHEMA = z.object({
     email: z.string().min(1, "Email is required.").email("Email must be in a valid format."),

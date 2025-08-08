@@ -33,7 +33,7 @@ type ApiKey = {
 };
 
 export type ContextWithAuth = {
-    context?: any;
+    ctx?: any;
     session?: Session;
     apiKey?: {
         value: Omit<ApiKey, "key"> | null;
@@ -46,7 +46,7 @@ export type ContextWithAuth = {
 export function withAuth(handler: Handler, authRequired?: boolean): Handler {
     if (authRequired === undefined) authRequired = true;
 
-    return async (req, context: { params: any }) => {
+    return async (req, ctx: { params: any }) => {
         const session = await auth.api.getSession({
             headers: req.headers
         });
@@ -62,14 +62,14 @@ export function withAuth(handler: Handler, authRequired?: boolean): Handler {
         if (!userId) return NextResponse.json({ message: "User ID was not found in session or API key." }, { status: 400 });
 
         const enhancedContext = {
-            ...context,
+            ...ctx,
             session,
             apiKey: {
                 value: key,
                 valid: API_KEY_VALID,
             },
             userId,
-            params: context.params
+            params: ctx.params
         };
 
         return handler(req, enhancedContext);

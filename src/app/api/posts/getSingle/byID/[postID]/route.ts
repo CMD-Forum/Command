@@ -4,9 +4,9 @@ import { ContextWithAuth, withAuth } from "@/lib/api/with-auth";
 import { db } from "@/lib/db";
 import { log } from "@/lib/utils";
 
-async function authGET(req: Request, context: ContextWithAuth) {
+async function authGET(req: Request, ctx: ContextWithAuth) {
     try {
-        const { postID: POST_ID } = await context.params;
+        const { postID: POST_ID } = await ctx.params;
 
         if (!POST_ID) { return NextResponse.json({ message: "Post ID is required." }, { status: 400 })}
 
@@ -36,8 +36,8 @@ async function authGET(req: Request, context: ContextWithAuth) {
         });
 
         if (!post) { return NextResponse.json({ message: "Post not found."}, { status: 404 })}
-        const IS_MODERATOR = await db.communityModerator.findFirst({ where: { userID: context.userId, communityID: post.community.id } });
-        if (post.community.public === false && context.userId !== post.authorId && !IS_MODERATOR) { return NextResponse.json({ message: "Post is private."}, { status: 403 })}
+        const IS_MODERATOR = await db.communityModerator.findFirst({ where: { userID: ctx.userId, communityID: post.community.id } });
+        if (post.community.public === false && ctx.userId !== post.authorId && !IS_MODERATOR) { return NextResponse.json({ message: "Post is private."}, { status: 403 })}
               
         return NextResponse.json(post, { status: 200 })
     } catch (error) {
