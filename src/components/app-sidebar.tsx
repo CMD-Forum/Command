@@ -1,22 +1,22 @@
 "use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/nav-main";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import { NavCommunities } from "./nav-communities"
-import { useTranslations } from "next-intl"
+} from "@/components/ui/sidebar";
+// import { useTranslations } from "next-intl";
+import { NavCommunities } from "./nav-communities";
 import NavSecondary from "./nav-secondary";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
-  const t = useTranslations("Layout.Sidebar.NavMain");
+  // const t = useTranslations("Layout.Sidebar.NavMain");
 
   return (
     <Sidebar collapsible="icon" {...props}>

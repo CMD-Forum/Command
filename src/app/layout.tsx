@@ -13,7 +13,6 @@ import { StrictMode } from "react";
 import { Toaster } from "sonner";
 
 import { AppSidebar } from "@/components/app-sidebar";
-import Breadcrumbs from "@/components/breadcrumbs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Separator } from "@/components/ui/separator";
 import { CommunityProvider } from "@/lib/context/community";
@@ -118,7 +117,7 @@ export default async function RootLayout({
 																<div className="flex items-center gap-2 px-4">
 																	<SidebarTrigger className="-ml-1" />
 																	<Separator orientation="vertical" className="mr-2 h-4" />
-																	<Breadcrumbs />
+																	{/*<Breadcrumbs />*/}
 																</div>
 															</header>
 															<div className="px-4 lg:!px-50">

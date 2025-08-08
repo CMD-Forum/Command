@@ -1,13 +1,13 @@
 "use client"
 
-import { EthernetPort, HomeIcon, TextSearch } from "lucide-react"
+import { EthernetPort, HomeIcon, TextSearch } from "lucide-react";
 
 import {
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-} from "@/components/ui/sidebar"
+	SidebarGroup,
+	SidebarGroupLabel,
+	SidebarMenu,
+	SidebarMenuButton,
+} from "@/components/ui/sidebar";
 import { useTranslations } from "next-intl";
 
 export function NavMain() {
@@ -16,7 +16,7 @@ export function NavMain() {
 
 	return (
 		<SidebarGroup>
-			<SidebarGroupLabel>{t("Pages")}</SidebarGroupLabel>
+			<SidebarGroupLabel className="pointer-events-none">{t("Pages")}</SidebarGroupLabel>
 			<SidebarMenu>
 				<SidebarMenuButton tooltip={t("Home")} asChild>
 					<a href="/">

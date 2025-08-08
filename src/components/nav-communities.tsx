@@ -61,7 +61,7 @@ export function NavCommunities() {
 
 	return (
 		<div className="px-2">
-			<SidebarGroupLabel>{t("Other")}</SidebarGroupLabel>
+			<SidebarGroupLabel className="pointer-events-none">{t("Other")}</SidebarGroupLabel>
 			<Collapsible
 				asChild
 				className="group/collapsible"
@@ -75,7 +75,7 @@ export function NavCommunities() {
 						</SidebarMenuButton>
 					</CollapsibleTrigger>
 				<CollapsibleContent>
-					<SidebarMenuSub>
+					<SidebarMenuSub data-testid="sidebar-joinedcommunities-submenu">
 						{!SESSION?.user?.id &&
 							<SidebarMenuSubItem>
 								<SidebarMenuSubButton asChild>

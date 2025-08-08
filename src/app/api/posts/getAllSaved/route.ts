@@ -1,24 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { lucia } from "@/lib/auth/auth";
+import { ContextWithAuth, withAuth } from "@/lib/api/with-auth";
 import { db } from "@/lib/db";
-import { legacy_logError } from "@/lib/utils";
+import { log } from "@/lib/utils";
 
-export async function GET(req: NextRequest) {
+export async function authGET(req: NextRequest, ctx: ContextWithAuth) {
     try {    
         const searchParams = req.nextUrl.searchParams;
         const PAGE = searchParams.get("page");
-
-        const AUTH_HEADER = req.headers.get("Authorization");
-        const SESSION_ID = lucia.readBearerToken(AUTH_HEADER ?? "");
-        if (!SESSION_ID) { return new NextResponse(null, { status: 401 })}
         
-        const { user } = await lucia.validateSession(SESSION_ID);
-        if (!user || !user.id) { return NextResponse.json({ error: "User is unauthorized to access this resource." }, { status: 401 })}
+        if (!ctx.userId) { return NextResponse.json({ message: "Authentication is required." }, { status: 401 })};
+
         if (PAGE === null || Number.isNaN(PAGE)) { return NextResponse.json({ message: "Page is required and needs to be a number." }, { status: 400 })}
 
         const SAVED_POSTS = await db.savedPosts.findMany({ 
-            where: { userID: user.id },
+            where: { userID: ctx.userId },
             include: {
                 post: {
                     include: {
@@ -37,11 +33,13 @@ export async function GET(req: NextRequest) {
             }
         });
         const POSTS = SAVED_POSTS.map((SAVED_POST) => SAVED_POST.post);
-        const POST_COUNT = await db.savedPosts.count({ where: { userID: user.id }});
+        const POST_COUNT = await db.savedPosts.count({ where: { userID: ctx.userId }});
 
         return NextResponse.json({ posts: POSTS, postCount: POST_COUNT }, { status: 200 } )
     } catch (error) {
-        legacy_logError(error);
+        log({ message: error, type: "error" });
         return NextResponse.json({ message: "Error occurred while fetching saved posts, please check your request for errors."}, { status: 500 });
     }
 }
+
+export const GET = withAuth(authGET, true);

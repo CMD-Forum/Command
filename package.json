@@ -113,12 +113,15 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
+    "@playwright/experimental-ct-react": "^1.54.2",
+    "@playwright/test": "^1.54.2",
     "@tanstack/eslint-plugin-query": "^5.78.0",
     "@tanstack/react-query-devtools": "^5.80.7",
     "@types/node": "^24.2.0",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "^19.1.1",
     "@types/react-syntax-highlighter": "^15.5.13",
+    "@vitejs/plugin-react": "^5.0.0",
     "eslint": "^9.32.0",
     "eslint-config-next": "^15.4.5",
     "eslint-plugin-deprecation": "^3.0.0",
