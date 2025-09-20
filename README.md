@@ -1,6 +1,10 @@
-> [!NOTE]
-> This repository is still being worked on, it's just that version 1.5 is taking way longer than expected.
 
+---
+
+> [!WARNING]
+> This version is now obsolete. Please see [Konsion](https://www.github.com/JamsterJava/Konsion) for the new project. It's being built from the ground up for better performance and reliability.
+
+---
 
 <h1 align="center">CMD Forum</h1>
 
